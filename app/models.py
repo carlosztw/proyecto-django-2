@@ -6,7 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from models import set_sql_for_field
 
 class Banco(models.Model):
     id_banco = models.AutoField(primary_key=True)
@@ -17,6 +17,13 @@ class Banco(models.Model):
         db_table = 'banco'
     def __str__(self):
         return self.nombre_banco
+
+
+    @set_sql_for_field('id_banco', 'select seq_banco.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+
 
 class Cliente(models.Model):
     rut_clie = models.BigIntegerField(primary_key=True)
@@ -60,7 +67,7 @@ class Empleado(models.Model):
         return str(self.rut_emp)
 
 class OrdenCompra(models.Model):
-    id_orden = models.BigIntegerField(primary_key=True)
+    id_orden = models.AutoField(primary_key=True)
     direccion = models.CharField(max_length=200)
     fecha_oc = models.DateField()
     rut_clie = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='rut_clie')
@@ -76,6 +83,9 @@ class OrdenCompra(models.Model):
         db_table = 'orden_compra'
     def __str__(self):
         return self.id_orden
+    @set_sql_for_field('id_orden', 'select seq_orden.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class OrdenCompraProducto(models.Model):
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
@@ -91,7 +101,7 @@ class OrdenCompraProducto(models.Model):
         return self.id_producto
 
 class Producto(models.Model):
-    id_producto = models.BigIntegerField(primary_key=True)
+    id_producto = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     precio = models.BigIntegerField()
     imagen = models.BinaryField(blank=True, null=True)
@@ -103,9 +113,12 @@ class Producto(models.Model):
         db_table = 'producto'
     def __str__(self):
         return self.nombre
+    @set_sql_for_field('id_producto', 'select seq_prod.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class Resena(models.Model):
-    id_resena = models.BigIntegerField(primary_key=True)
+    id_resena = models.AutoField(primary_key=True)
     resena = models.CharField(max_length=250)
     id_producto = models.ForeignKey(Producto, models.DO_NOTHING, db_column='id_producto')
 
@@ -114,9 +127,12 @@ class Resena(models.Model):
         db_table = 'resena'
     def __str__(self):
         return self.id_resena
+    @set_sql_for_field('id_resena', 'select seq_resn.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class Servicio(models.Model):
-    id_servicio = models.BigIntegerField(primary_key=True)
+    id_servicio = models.AutoField(primary_key=True)
     fecha_ser = models.DateField()
     adjunto_ser = models.BinaryField(blank=True, null=True)
     comentario = models.CharField(max_length=500)
@@ -127,6 +143,9 @@ class Servicio(models.Model):
         db_table = 'servicio'
     def __str__(self):
         return self.id_servicio
+    @set_sql_for_field('id_servicio', 'select seq_serv.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class ServicioDetalle(models.Model):
     id_orden = models.OneToOneField(OrdenCompra, models.DO_NOTHING, db_column='id_orden', primary_key=True)
@@ -140,7 +159,7 @@ class ServicioDetalle(models.Model):
         return self.id_servicio
 
 class TipoCuenta(models.Model):
-    id_tipo_cuenta = models.BigIntegerField(primary_key=True)
+    id_tipo_cuenta = models.AutoField(primary_key=True)
     tipo_cuenta = models.CharField(max_length=60)
 
     class Meta:
@@ -148,9 +167,12 @@ class TipoCuenta(models.Model):
         db_table = 'tipo_cuenta'
     def __str__(self):
         return self.tipo_cuenta
+    @set_sql_for_field('id_tipo_cuenta', 'select seq_tp_cnta.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class TipoEmpleado(models.Model):
-    id_tipo_empleado = models.BigIntegerField(primary_key=True)
+    id_tipo_empleado = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=60)
 
     class Meta:
@@ -158,9 +180,12 @@ class TipoEmpleado(models.Model):
         db_table = 'tipo_empleado'
     def __str__(self):
         return self.descripcion
+    @set_sql_for_field('id_tipo_empleado', 'select seq_tp_emp.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class TipoPago(models.Model):
-    id_tipo_pago = models.BigIntegerField(primary_key=True)
+    id_tipo_pago = models.AutoField(primary_key=True)
     tipo_pago = models.CharField(max_length=60)
 
     class Meta:
@@ -168,9 +193,12 @@ class TipoPago(models.Model):
         db_table = 'tipo_pago'
     def __str__(self):
         return self.tipo_pago
+    @set_sql_for_field('id_tipo_pago', 'select seq_pago.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 class TipoProducto(models.Model):
-    id_tipo_prod = models.BigIntegerField(primary_key=True)
+    id_tipo_prod = models.AutoField(primary_key=True)
     descripcion_prod = models.CharField(max_length=60)
 
     class Meta:
@@ -179,8 +207,12 @@ class TipoProducto(models.Model):
     def __str__(self):
         return self.descripcion_prod
 
+    @set_sql_for_field('id_tipo_prod', 'select seq_tp_prod.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
 class TipoServicio(models.Model):
-    id_tipo_servicio = models.BigIntegerField(primary_key=True)
+    id_tipo_servicio = models.AutoField(primary_key=True)
     descripcion_ser = models.CharField(max_length=60)
 
     class Meta:
@@ -188,3 +220,7 @@ class TipoServicio(models.Model):
         db_table = 'tipo_servicio'
     def __str__(self):
         return self.descripcion_ser
+    
+    @set_sql_for_field('id_tipo_servicio', 'select seq_tp_ser.nextval from dual')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
