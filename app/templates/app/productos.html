@@ -1,10 +1,38 @@
 {% extends 'app/base.html' %}
 {% block titulo %} Productos {% endblock %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/productos.css' %}">
+{% endblock %}
 {% block contenido %}
 <div>   
     <br>
     <h1 style="text-align: center; color:#0D6EFD; "> Productos </h1>  
 </div>
 
+<div class="container-fluid cardprod">
+    <div class="row">
+        <!-- CARD DE PRODUCTOS -->
+        <div class="gallery">
+            {% for p in productos %}
+            <div class="content">
+                {% if p.3 %}
+                <img src="{{p.3}}"> 
+                {% else %}
+                <img src="{% static 'app/img/noimagen.jpg' %}">
+                {% endif %}
+                <h10>Stock: {{p.4}} uds.</h10>
+                <h3>{{p.1}}</h3>
+                {% if p.4 == 0 %}
+                <button style="background-color: black;" class="buy-1" disabled>AGOTADO</button> 
+                {% elif p.4 == 1 %}
+                <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
+                {% else %}
+                <button class="buy-1">Agregar al carro</button> 
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}
