@@ -20,29 +20,29 @@
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nombre:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" placeholder="Nombre del producto" aria-label="default input example">
+                        <input class="form-control" type="text" placeholder="Nombre del producto" aria-label="default input example" name="p_nombre">
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Precio:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Precio del producto" aria-label="default input example">
+                        <input class="form-control" type="number" placeholder="Precio del producto" aria-label="default input example" name="p_precio">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Imagen:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="file" placeholder="Imagen del producto" aria-label="default input example">
+                        <input class="form-control" type="file" aria-label="default input example" name="p_imagen">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Stock:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Stock del producto" aria-label="default input example">
+                        <input class="form-control" type="number" placeholder="Stock del producto" aria-label="default input example" name="p_stock">
                     </div>
                 </div>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Seleccionar tipo de producto</option>
+                <select class="form-select" aria-label="Default select example" name="p_tp">
+                    <option selected disabled>Seleccionar tipo de producto</option>
                     {% for i in categorias %}
                     <option value="{{i.0}}">{{i.1}}</option>
                     {% endfor %}
@@ -52,6 +52,7 @@
                     <button class="btn btn-primary" type="submit">Guardar Producto</button>
                 </div>
             </form>
+            {{mensaje}}
         </div>
     </div>
     <br>
@@ -71,6 +72,7 @@
                 {% endif %}
                 <h10>Stock: {{p.4}} uds.</h10>
                 <h3>{{p.1}}</h3>
+                <h4>${{p.2}}</h4>
                 {% if p.4 == 0 %}
                 <button style="background-color: black;" class="buy-1" disabled>AGOTADO</button> 
                 {% elif p.4 == 1 %}
