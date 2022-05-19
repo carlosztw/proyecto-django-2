@@ -29,18 +29,7 @@ def listado_productos():
     cursor.callproc("OBTENER_PRODUCTOS", [out_cur])
     lista = []
     for i in out_cur:
-        if i[3] is not None:
-            data = {
-                'data':i,
-                'imagen':str(base64.b64encode(i[3].read()), 'utf-8')
-            }
-            lista.append(data)
-        else:
-            data = {
-                'data':i,
-                'imagen': None
-            }
-            lista.append(data)
+        lista.append(i)
     return lista
 
 def listar_producto(id):
@@ -48,32 +37,15 @@ def listar_producto(id):
     cursor.callproc("OBTENER_PRODUCTO", [id, out_cur])
     lista = []
     for i in out_cur:
-        if i[3] is not None:
-            data = {
-                'data':i,
-                'imagen':str(base64.b64encode(i[3].read()), 'utf-8')
-            }
-            lista.append(data)
-        else:
-            data = {
-                'data':i,
-                'imagen': None
-            }
-            lista.append(data)
+        lista.append(i)
     return lista
 
-def agregar_producto(p_nombre, p_precio, p_imagen, p_stock, p_tp):
-    cursor.callproc('INSERTAR_PRODUCTO', [p_nombre, p_precio, p_imagen, p_stock, p_tp])
+def agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen):
+    cursor.callproc('INSERTAR_PRODUCTO', [p_nombre, p_precio, p_stock, p_tp, p_imagen])
     
-def agregar_producto_sin_imagen(p_nombre, p_precio, p_stock, p_tp):
-    cursor.callproc('INSERTAR_PRODUCTO_SIN_IMAGEN', [p_nombre, p_precio, p_stock, p_tp])
-
-def modificar_producto(p_id_pro, p_nombre, p_precio, p_imagen, p_stock, p_tp):
-    cursor.callproc('ACTUALIZAR_PRODUCTO', [p_id_pro, p_nombre, p_precio, p_imagen, p_stock, p_tp])
+def modificar_producto(p_id_pro, p_nombre, p_precio, p_stock, p_tp, p_imagen):
+    cursor.callproc('ACTUALIZAR_PRODUCTO', [p_id_pro, p_nombre, p_precio, p_stock, p_tp, p_imagen])
     
-def modificar_producto_sin_imagen(p_id_pro, p_nombre, p_precio, p_stock, p_tp):
-    cursor.callproc('ACTUALIZAR_PRODUCTO_SIN_IMAGEN', [p_id_pro, p_nombre, p_precio, p_stock, p_tp])
-
 def modificar_producto(request, id):
     data = {
         'producto':listar_producto(id),
@@ -85,13 +57,9 @@ def modificar_producto(request, id):
         pm_precio = request.POST.get('pm_precio')
         pm_stock = request.POST.get('pm_stock')
         pm_tp = request.POST.get('pm_tp')
-        if 'pm_imagen' in request.FILES:
-            pm_imagen = request.FILES['pm_imagen'].read()
-            modificar_producto(id, pm_nombre, pm_precio, pm_imagen, pm_stock, pm_tp)
-            return redirect(to="adm_productos")
-        else:
-            modificar_producto_sin_imagen(id, pm_nombre, pm_precio, pm_stock, pm_tp)
-            return redirect(to="adm_productos")      
+        pm_imagen = request.POST.get('pm_imagen')
+        modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen)
+        return redirect(to="adm_productos")
     return render(request, 'administradores/adm_productos_modificar.html', data)
 
 def eliminar_producto(request, id):
@@ -109,13 +77,9 @@ def adm_productos(request):
         p_precio = request.POST.get('p_precio')
         p_stock = request.POST.get('p_stock')
         p_tp = request.POST.get('p_tp')
-        if 'p_imagen' in request.FILES:
-            p_imagen = request.FILES['p_imagen'].read()
-            agregar_producto(p_nombre, p_precio, p_imagen, p_stock, p_tp); 
-            data['productos'] = listado_productos() 
-        else:
-            agregar_producto_sin_imagen(p_nombre, p_precio, p_stock, p_tp);
-            data['productos'] = listado_productos()       
+        p_imagen = request.POST.get('p_imagen')
+        agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen); 
+        data['productos'] = listado_productos() 
     return render(request, 'administradores/adm_productos.html', data) 
   
 def listado_tipo_productos():
@@ -136,5 +100,6 @@ def adm_clientes(request):
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
+
 def adm_trabajadores(request):
     return render(request, 'administradores/adm_trabajadores.html', {'a_t': 'active'})   

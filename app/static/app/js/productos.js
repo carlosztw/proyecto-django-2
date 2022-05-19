@@ -1,5 +1,8 @@
 const targetDiv = document.getElementById("third");
 const btn = document.getElementById("esconder");
+
+
+
 btn.onclick = function () {
     if (targetDiv.style.display !== "none") {
     targetDiv.style.display = "none";
@@ -50,10 +53,11 @@ function confirmarEliminar(id){
           title: '¡Eliminado!',
           text: 'El producto ha sido eliminado de la base de datos',
           icon: 'success',
-          showConfirmButton: false,
-          allowOutsideClick: false
-      })
-          window.location.href = "/eliminarproducto/"+id+"/";
+          allowOutsideClick: false,
+          confirmButtonColor: '#4CAF50'
+        }).then(function() {
+            window.location.href = "/eliminarproducto/"+id+"/";
+        })
 
       } else if (
       /* Read more about handling dismissals below */

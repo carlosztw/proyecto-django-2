@@ -104,9 +104,9 @@ class Producto(models.Model):
     id_producto = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     precio = models.BigIntegerField()
-    imagen = models.BinaryField(blank=True, null=True)
     stock = models.BigIntegerField()
     id_tipo_producto = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='id_tipo_producto')
+    nombre = models.CharField(max_length=300, null=True)
 
     class Meta:
         managed = False
