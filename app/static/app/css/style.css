@@ -1,4 +1,3 @@
-footer {
-    display: block;
+.cbody{
+    min-height: 100vh;
 }
-

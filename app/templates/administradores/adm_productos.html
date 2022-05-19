@@ -15,49 +15,48 @@
 <div class="container" id="third" style="display: none;">   
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-7 col-lg-7 col-xl-5">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data" class="needs-validation" id="p_form" novalidate>
                 {% csrf_token %}
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nombre:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" placeholder="Nombre del producto" aria-label="default input example" name="p_nombre">
+                        <input class="form-control" type="text" placeholder="Nombre del producto" aria-label="default input example" name="p_nombre" id="p_nombre" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Precio:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Precio del producto" aria-label="default input example" name="p_precio">
+                        <input class="form-control" type="number" placeholder="Precio del producto" aria-label="default input example" min="0" oninput="validity.valid||(value='');" name="p_precio" id="p_precio" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Imagen:</label>
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Imagen:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="file" aria-label="default input example" name="p_imagen">
+                        <input class="form-control" type="file" aria-label="default input example" name="p_imagen" id="p_imagen">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Stock:</label>
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Stock:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Stock del producto" aria-label="default input example" name="p_stock">
+                        <input class="form-control" type="number" placeholder="Stock del producto" aria-label="default input example" min="0" oninput="validity.valid||(value='');" name="p_stock" id="p_stock" required>
                     </div>
                 </div>
-                <select class="form-select" aria-label="Default select example" name="p_tp">
-                    <option selected disabled>Seleccionar tipo de producto</option>
+                <select class="form-select" aria-label="Default select example" name="p_tp" id="p_tp" required>
+                    <option selected disabled value="">Seleccionar tipo de producto</option>
                     {% for i in categorias %}
                     <option value="{{i.0}}">{{i.1}}</option>
                     {% endfor %}
                 </select>
                 <br>
                 <div class="col-12 text-center">
-                    <button class="btn btn-primary" type="submit">Guardar Producto</button>
+                    <button class="btn btn-success" type="submit">Guardar</button>
+                    <button class="btn btn-secondary" type="reset">Limpiar</button>
                 </div>
             </form>
-            {{mensaje}}
         </div>
     </div>
     <br>
 </div>
-
 <!-- LISTAR -->
 <div class="container-fluid cardprod">
     <div class="row">
@@ -65,27 +64,23 @@
         <div class="gallery">
             {% for p in productos %}
             <div class="content">
-                {% if p.3 %}
-                <img src="{{p.3}}"> 
+                {% if p.imagen %}
+                <img src="data:imagen/png;base64, {{p.imagen}}"> 
                 {% else %}
                 <img src="{% static 'app/img/noimagen.jpg' %}">
                 {% endif %}
-                <h10>Stock: {{p.4}} uds.</h10>
-                <h3>{{p.1}}</h3>
-                <h4>${{p.2}}</h4>
-                {% if p.4 == 0 %}
-                <button style="background-color: black;" class="buy-1" disabled>AGOTADO</button> 
-                {% elif p.4 == 1 %}
-                <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
-                {% else %}
-                <button class="buy-1">Agregar al carro</button> 
-                {% endif %}
+                <h10>Stock: {{p.data.4}} uds.</h10>
+                <h3>{{p.data.1}}</h3>
+                <h4>${{p.data.2}}</h4>
+                <br>
+                <div>
+                    <a href="{% url 'modificar_producto' p.data.0 %}" class="btn btn-warning">Modificar</a>
+                    <a onclick="confirmarEliminar({{p.data.0}})" class="btn btn-danger">Eliminar</a>
+                </div>
+                <br>
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
-<!-- MODIFICAR -->
-
-
 {% endblock %}

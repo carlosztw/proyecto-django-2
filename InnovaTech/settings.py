@@ -77,15 +77,12 @@ WSGI_APPLICATION = 'InnovaTech.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/xe',
+        'NAME': 'ORCL',
         'USER': 'innova',
         'PASSWORD': 'duoc2022',
-        'TEST': {
-            'USER': 'default_test',
-            'TBLSPACE': 'default_test_tbls',
-            'TBLSPACE_TMP': 'default_test_tbls_tmp',
-        },
-    },
+        'HOST': 'innovadb2.cdevfpfg3pvk.sa-east-1.rds.amazonaws.com',
+        'PORT': '1521',
+    }
 }
 
 

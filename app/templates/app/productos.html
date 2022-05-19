@@ -16,17 +16,17 @@
         <div class="gallery">
             {% for p in productos %}
             <div class="content">
-                {% if p.3 %}
-                <img src="{{p.3}}"> 
+                {% if p.imagen %}
+                <img src="data:imagen/png;base64, {{p.imagen}}"> 
                 {% else %}
                 <img src="{% static 'app/img/noimagen.jpg' %}">
                 {% endif %}
-                <h10>Stock: {{p.4}} uds.</h10>
-                <h3>{{p.1}}</h3>
-                <h4>${{p.2}}</h4>
-                {% if p.4 == 0 %}
+                <h10>Stock: {{p.data.4}} uds.</h10>
+                <h3>{{p.data.1}}</h3>
+                <h4>${{p.data.2}}</h4>
+                {% if p.data.4 == 0 %}
                 <button style="background-color: black;" class="buy-1" disabled>AGOTADO</button> 
-                {% elif p.4 == 1 %}
+                {% elif p.data.4 == 1 %}
                 <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
                 {% else %}
                 <button class="buy-1">Agregar al carro</button> 
