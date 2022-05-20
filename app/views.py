@@ -43,10 +43,10 @@ def listar_producto(id):
 def agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen):
     cursor.callproc('INSERTAR_PRODUCTO', [p_nombre, p_precio, p_stock, p_tp, p_imagen])
     
-def modificar_producto(p_id_pro, p_nombre, p_precio, p_stock, p_tp, p_imagen):
-    cursor.callproc('ACTUALIZAR_PRODUCTO', [p_id_pro, p_nombre, p_precio, p_stock, p_tp, p_imagen])
+def modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen):
+    cursor.callproc('ACTUALIZAR_PRODUCTO', [id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen])
     
-def modificar_producto(request, id):
+def adm_modificar_producto(request, id):
     data = {
         'producto':listar_producto(id),
         'a_p': navbar(),
