@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.core.paginator import Paginator
-import base64
+import cx_Oracle
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
@@ -41,11 +41,15 @@ def listar_producto(id):
     return lista
 
 def agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen):
-    cursor.callproc('INSERTAR_PRODUCTO', [p_nombre, p_precio, p_stock, p_tp, p_imagen])
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('INSERTAR_PRODUCTO', [p_nombre, p_precio, p_stock, p_tp, p_imagen, salida])
+    return salida.getvalue()
     
 def modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen):
-    cursor.callproc('ACTUALIZAR_PRODUCTO', [id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen])
-    
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('ACTUALIZAR_PRODUCTO', [id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen, salida])
+    return salida.getvalue()
+
 def adm_modificar_producto(request, id):
     data = {
         'producto':listar_producto(id),
@@ -58,7 +62,11 @@ def adm_modificar_producto(request, id):
         pm_stock = request.POST.get('pm_stock')
         pm_tp = request.POST.get('pm_tp')
         pm_imagen = request.POST.get('pm_imagen')
-        modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen)
+        salida = modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen)
+        if salida == 1:
+            data['mensaje'] = "Producto modificado"
+        else:
+            data['mensajeError'] = 'El producto no fue modificado' 
         return redirect(to="adm_productos")
     return render(request, 'administradores/adm_productos_modificar.html', data)
 
@@ -78,7 +86,11 @@ def adm_productos(request):
         p_stock = request.POST.get('p_stock')
         p_tp = request.POST.get('p_tp')
         p_imagen = request.POST.get('p_imagen')
-        agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen); 
+        salida = agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen);
+        if salida == 1:
+            data['mensaje'] = "Producto agregado"
+        else:
+            data['mensajeError'] = 'El producto no fue agregado' 
         data['productos'] = listado_productos() 
     return render(request, 'administradores/adm_productos.html', data) 
   
@@ -91,6 +103,90 @@ def listado_tipo_productos():
     return lista
 ### FIN CRUD PRODUCTOS ###
 
+### CRUD TRABJADORES ###
+def listado_trabajadores():
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("OBTENER_TRABAJADORES", [out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def listar_trabajador(id):
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("OBTENER_TRABAJADOR", [id, out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def agregar_trabajador(t_rut, t_dv, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc):
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('INSERTAR_TRABAJADOR', [t_rut, t_dv, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc, salida])
+    return salida.getvalue()
+
+def adm_trabajadores(request):
+    data = {
+        'a_t': 'active',
+        't_empleado': listado_tipo_empleado(),
+        'bancos': listado_banco(),
+        't_cuenta': listado_tipo_cuenta(),
+        'trabajadores': listado_trabajadores()
+    }
+    if request.method == 'POST':
+        t_rut = request.POST.get('t_rut')
+        t_dv = request.POST.get('t_dv')
+        t_pn = request.POST.get('t_pn')
+        t_sn = request.POST.get('t_sn')
+        t_pa = request.POST.get('t_pa')
+        t_sa = request.POST.get('t_sa')
+        t_c = request.POST.get('t_c')
+        t_p = request.POST.get('t_p')
+        t_d = request.POST.get('t_d')
+        t_te = request.POST.get('t_te')
+        t_s = request.POST.get('t_s')
+        t_nc = request.POST.get('t_nc')
+        t_temp = request.POST.get('t_temp')
+        t_b = request.POST.get('t_b')
+        t_tc = request.POST.get('t_tc')
+        salida = agregar_trabajador(t_rut, t_dv, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc); 
+        if salida == 1:
+            data['mensaje'] = 'Trabajador agregado'
+        else:   
+            data['mensajeError'] = 'El trabajador no fue agregado'
+        data['trabajadores'] = listado_trabajadores() 
+    return render(request, 'administradores/adm_trabajadores.html', data)   
+
+def eliminar_trabajador(request, id):
+    cursor.callproc('ELIMINAR_TRABAJADOR', [id])
+    return redirect(to="adm_trabajadores")
+
+def listado_tipo_empleado():
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("LISTAR_TIPO_EMPLEADO", [out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def listado_banco():
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("LISTAR_BANCO", [out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def listado_tipo_cuenta():
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("LISTAR_TIPO_CUENTA", [out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+### FIN CRUD TRABAJADORES ###
+
+
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
@@ -101,5 +197,4 @@ def adm_clientes(request):
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
 
-def adm_trabajadores(request):
-    return render(request, 'administradores/adm_trabajadores.html', {'a_t': 'active'})   
+

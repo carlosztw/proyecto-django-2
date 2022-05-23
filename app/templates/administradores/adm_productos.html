@@ -20,25 +20,25 @@
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nombre:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" placeholder="Nombre del producto" aria-label="default input example" name="p_nombre" id="p_nombre" required>
+                        <input class="form-control" type="text" placeholder="Nombre del producto" name="p_nombre" id="p_nombre" minlength="4" maxlength="100" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Precio:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Precio del producto" aria-label="default input example" min="0" oninput="validity.valid||(value='');" name="p_precio" id="p_precio" required>
+                        <input class="form-control" type="number" placeholder="Precio del producto" min="0" oninput="validity.valid||(value='');" name="p_precio" id="p_precio" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Imagen:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="url" aria-label="default input example" placeholder="URL de la imagen" name="p_imagen" id="p_imagen">
+                        <input class="form-control" type="url" placeholder="URL de la imagen" name="p_imagen" id="p_imagen">
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Stock:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Stock del producto" aria-label="default input example" min="0" oninput="validity.valid||(value='');" name="p_stock" id="p_stock" required>
+                        <input class="form-control" type="number" placeholder="Stock del producto" min="0" oninput="validity.valid||(value='');" name="p_stock" id="p_stock" required>
                     </div>
                 </div>
                 <select class="form-select" aria-label="Default select example" name="p_tp" id="p_tp" required>
@@ -57,6 +57,7 @@
     </div>
     <br>
 </div>
+
 <!-- LISTAR -->
 <div class="container-fluid cardprod">
     <div class="row">

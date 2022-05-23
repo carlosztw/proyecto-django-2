@@ -1,6 +1,166 @@
 {% extends 'app/base.html' %}
-{% block titulo %} Administrar Trabajadores {% endblock %}
+{% block titulo %} Administrar Productos {% endblock %}
 {% load static %}
+{% block js %}<script src="{% static 'app/js/trabajadores.js' %}"></script>{% endblock %}
 {% block contenido %}
-<h1> ADM Trabajadores </h1>
+<div>   
+    <br>
+    <h1 style="text-align: center; color:#0D6EFD; "> Administración de Trabajadores </h1>  
+</div>
+
+<!-- AGREGAR -->
+<div class="col-md-12 text-center">
+    <button type="button" class="btn btn-primary" style=" margin-top: 2%; margin-bottom: 2%;" id="esconder"> Agregar Trabajador </button>
+</div>
+<div class="container" id="third" style="display: none;">  
+    <div class="row justify-content-center"> 
+        <div class="col-12 col-sm-10 col-md-7 col-lg-7 col-xl-5">
+            <form action="" method="POST" class="needs-validation" id="t_form" novalidate>
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">RUT:</label>
+                        <input class="form-control" type="number" placeholder="RUT del rabajador" name="t_rut" id="t_rut" min="10000000" max="99999999"  required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">DV:</label>
+                        <input class="form-control" style="text-transform:uppercase" type="text" placeholder="DV" name="t_dv" id="t_dv" maxlength="1" required>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="staticEmail" class="col-form-label">Primer nombre:</label>
+                        <input class="form-control" type="text" placeholder="Primer nombre del trabajador" name="t_pn" id="t_pn" minlength="5" maxlength="50" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="staticEmail" class="col-form-label">Segundo nombre:</label>
+                        <input class="form-control" type="text" placeholder="Segundo nombre del trabajador" name="t_sn" id="t_sn" minlength="5" maxlength="50">
+                    </div>           
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                            <label for="staticEmail" class="col-form-label">Primer apellido:</label>
+                            <input class="form-control" type="text" placeholder="Primer apellido del trabajador" name="t_pa" id="t_pa" minlength="5" maxlength="50" required>
+                    </div>
+                    <div class="col-md-6">
+                            <label for="staticEmail" class="col-form-label">Segundo apellido:</label>
+                            <input class="form-control" type="text" placeholder="Segundo apellido del trabajador" name="t_sa" id="t_sa" minlength="5" maxlength="50" required>
+                    </div>
+                </div>
+                <br>
+                <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Correo:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="email" placeholder="nombre@ejemplo.com" name="t_c" id="t_c" maxlength="150" required>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Contraseña:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="password" placeholder="Contraseña de mínimo 6 caracteres" name="t_p" id="t_p" minlength="6" maxlength="20" required>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Dirección:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" placeholder="Dirección del trabajador" name="t_d" id="t_d" minlength="10" maxlength="200" required>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Teléfono:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" placeholder="Ej: 912345678" name="t_te" id="t_te" min="900000000" maxlength="999999999" required>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Sueldo:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" placeholder="Sueldo del trabajador" name="t_s" id="t_s" min="100000" maxlength="99999999" required>
+                    </div>
+                </div>  
+                <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 form-label">Nº de cuenta:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" style="margin-top: 2px;" type="number" placeholder="Nº Cuenta bancaria" name="t_nc" id="t_nc" min="1000000" maxlength="99999999999999" required>
+                    </div>
+                </div>                                         
+                <select class="form-select" aria-label="Default select example" name="t_b" id="t_b" required>
+                    <option selected disabled value="">Seleccionar banco</option>
+                    {% for b in bancos %}
+                    <option value="{{b.0}}">{{b.1}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <select class="form-select" aria-label="Default select example" name="t_tc" id="t_tc" required>
+                    <option selected disabled value="">Seleccionar tipo de cuenta</option>
+                    {% for tc in t_cuenta %}
+                    <option value="{{tc.0}}">{{tc.1}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <select class="form-select" aria-label="Default select example" name="t_temp" id="t_temp" required>
+                    <option selected disabled value="">Seleccionar tipo de empleado</option>
+                    {% for te in t_empleado %}
+                    <option value="{{te.0}}">{{te.1}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <div class="col-12 text-center">
+                    <button class="btn btn-success" type="submit" >Guardar</button>
+                    <button class="btn btn-secondary" type="reset">Limpiar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+<!-- LISTAR -->
+<div class="row justify-content-center"> 
+    <div class="col-12 col-sm-10 col-md-7 col-lg-10 col-xl-10 table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">RUT</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Sueldo</th>
+                <th scope="col">Nº de cuenta</th>
+                <th scope="col">Banco</th>
+                <th scope="col">Tipo de cuenta</th>
+                <th scope="col">Tipo de empleado</th>
+                <th scope="col">Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for t in trabajadores %}
+            <tr>
+                <th scope="row">{{t.18}}</th>
+                <td>{{t.0}} - {{t.1}}</td>
+                {% if t.3 == None %}
+                <td>{{t.2}} {{t.4}} {{t.5}}</td>
+                {% else %}
+                <td>{{t.2}} {{t.3}} {{t.4}} {{t.5}}</td>
+                {% endif %}
+                <td>{{t.6}}</td>
+                <td>{{t.8}}</td>
+                <td>{{t.9}}</td>
+                <td>{{t.10}}</td>
+                <td>{{t.11}}</td>
+                <td>{{t.16}}</td>
+                <td>{{t.17}}</td>
+                <td>{{t.15}}</td>
+                <td>
+                    <a href="" class="btn btn-warning">Modificar</a>
+                    <a onclick="confirmarEliminar({{t.0}})" class="btn btn-danger" style="margin-top: 4px;">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+</div>
 {% endblock %}

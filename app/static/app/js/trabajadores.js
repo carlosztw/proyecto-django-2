@@ -36,7 +36,7 @@ btn.onclick = function () {
 function confirmarEliminar(id){ 
   swal.fire({
       title: '¿Estás seguro?',
-      text: "El producto será eliminado de la base de datos",
+      text: "El trabajador será eliminado de la base de datos",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#4CAF50',
@@ -49,12 +49,12 @@ function confirmarEliminar(id){
       if (result.isConfirmed) {
       swal.fire({
           title: '¡Eliminado!',
-          text: 'El producto ha sido eliminado de la base de datos',
+          text: 'El trabajador ha sido eliminado de la base de datos',
           icon: 'success',
           allowOutsideClick: false,
           confirmButtonColor: '#4CAF50'
         }).then(function() {
-            window.location.href = "/eliminarproducto/"+id+"/";
+            window.location.href = "/eliminartrabajador/"+id+"/";
         })
 
       } else if (
@@ -63,11 +63,10 @@ function confirmarEliminar(id){
       ) {
       swal.fire({
           title: 'Cancelado',
-          text: 'El producto no ha sido eliminado',
+          text: 'El trabajador no ha sido eliminado',
           icon: 'error',
           confirmButtonColor: '#4CAF50'
       })
       }
   })
 }
-
