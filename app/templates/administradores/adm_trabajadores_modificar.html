@@ -1,105 +1,106 @@
 {% extends 'app/base.html' %}
-{% block titulo %} Administrar Trabajadores {% endblock %}
+{% block titulo %} Modificar Trabajador {% endblock %}
 {% load static %}
-{% block js %}<script src="{% static 'app/js/trabajadores.js' %}"></script>{% endblock %}
+{% block js %}<script src="{% static 'app/js/modificar_trabajadores.js' %}"></script>{% endblock %}
 {% block contenido %}
 <div>   
     <br>
     <h1 style="text-align: center; color:#0D6EFD; "> Administración de Trabajadores </h1>  
 </div>
 
-<!-- AGREGAR -->
-<div class="col-md-12 text-center">
-    <button type="button" class="btn btn-primary" style=" margin-top: 2%; margin-bottom: 2%;" id="esconder"> Agregar Trabajador </button>
-</div>
-<div class="container" id="third" style="display: none;">  
+<div class="container">  
     <div class="row justify-content-center"> 
         <div class="col-12 col-sm-10 col-md-7 col-lg-7 col-xl-5">
-            <form action="" method="POST" class="needs-validation" id="t_form" novalidate>
+            <form action="" method="POST" class="needs-validation" id="tm_form" novalidate>
                 {% csrf_token %}
+                {% for x in trabajador %}
                 <div class="row g-3">
                     <div class="col-md-8">
                         <label for="staticEmail" class="col-sm-2 col-form-label">RUT:</label>
-                        <input class="form-control" type="number" placeholder="RUT del rabajador" name="t_rut" id="t_rut" min="10000000" max="99999999"  required>
+                        <input class="form-control" type="number" placeholder="RUT del rabajador" name="tm_rut" id="tm_rut" min="10000000" max="99999999" value="{{x.0}}" disabled required>
                     </div>
                     <div class="col-md-4">
                         <label for="staticEmail" class="col-sm-2 col-form-label">DV:</label>
-                        <input class="form-control" style="text-transform:uppercase" type="text" placeholder="DV" name="t_dv" id="t_dv" maxlength="1" required>
+                        <input class="form-control" style="text-transform:uppercase" type="text" value="{{x.1}}" placeholder="DV" name="tm_dv" id="tm_dv" maxlength="1" disabled required>
                     </div>
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="staticEmail" class="col-form-label">Primer nombre:</label>
-                        <input class="form-control" type="text" placeholder="Primer nombre del trabajador" name="t_pn" id="t_pn" minlength="5" maxlength="50" required>
+                        <input class="form-control" type="text" value="{{x.2}}" placeholder="Primer nombre del trabajador" name="tm_pn" id="tm_pn" minlength="5" maxlength="50" required>
                     </div>
                     <div class="col-md-6">
                         <label for="staticEmail" class="col-form-label">Segundo nombre:</label>
-                        <input class="form-control" type="text" placeholder="Segundo nombre del trabajador" name="t_sn" id="t_sn" minlength="5" maxlength="50">
+                        {% if x.3 == None %}
+                        <input class="form-control" type="text" placeholder="Segundo nombre del trabajador" name="tm_sn" id="tm_sn" minlength="5" maxlength="50">
+                        {% else %}
+                        <input class="form-control" type="text" value="{{x.3}}" placeholder="Segundo nombre del trabajador" name="tm_sn" id="tm_sn" minlength="5" maxlength="50">
+                        {% endif %}
                     </div>           
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6">
                             <label for="staticEmail" class="col-form-label">Primer apellido:</label>
-                            <input class="form-control" type="text" placeholder="Primer apellido del trabajador" name="t_pa" id="t_pa" minlength="5" maxlength="50" required>
+                            <input class="form-control" type="text" value="{{x.4}}" placeholder="Primer apellido del trabajador" name="tm_pa" id="tm_pa" minlength="5" maxlength="50" required>
                     </div>
                     <div class="col-md-6">
                             <label for="staticEmail" class="col-form-label">Segundo apellido:</label>
-                            <input class="form-control" type="text" placeholder="Segundo apellido del trabajador" name="t_sa" id="t_sa" minlength="5" maxlength="50" required>
+                            <input class="form-control" type="text" value="{{x.5}}" placeholder="Segundo apellido del trabajador" name="tm_sa" id="tm_sa" minlength="5" maxlength="50" required>
                     </div>
                 </div>
                 <br>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Correo:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="email" placeholder="nombre@ejemplo.com" name="t_c" id="t_c" maxlength="150" required>
+                        <input class="form-control" type="email" value="{{x.6}}" placeholder="nombre@ejemplo.com" name="tm_c" id="tm_c" maxlength="150" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Contraseña:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="password" placeholder="Contraseña de mínimo 6 caracteres" name="t_p" id="t_p" minlength="6" maxlength="20" required>
+                        <input class="form-control" type="password" value="{{x.7}}" placeholder="Contraseña de mínimo 6 caracteres" name="tm_p" id="tm_p" minlength="6" maxlength="20" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Dirección:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" placeholder="Dirección del trabajador" name="t_d" id="t_d" minlength="10" maxlength="200" required>
+                        <input class="form-control" type="text" value="{{x.8}}" placeholder="Dirección del trabajador" name="tm_d" id="tm_d" minlength="10" maxlength="200" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Teléfono:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Ej: 912345678" name="t_te" id="t_te" min="900000000" maxlength="999999999" required>
+                        <input class="form-control" type="number" value="{{x.9}}" placeholder="Ej: 912345678" name="tm_te" id="tm_te" min="900000000" maxlength="999999999" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Sueldo:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Sueldo del trabajador" name="t_s" id="t_s" min="100000" maxlength="99999999" required>
+                        <input class="form-control" type="number" value="{{x.10}}" placeholder="Sueldo del trabajador" name="tm_s" id="tm_s" min="100000" maxlength="99999999" required>
                     </div>
                 </div>  
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 form-label">Nº de cuenta:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" style="margin-top: 2px;" type="number" placeholder="Nº Cuenta bancaria" name="t_nc" id="t_nc" min="1000000" maxlength="99999999999999" required>
+                        <input class="form-control" style="margin-top: 2px;" value="{{x.11}}" type="number" placeholder="Nº Cuenta bancaria" name="tm_nc" id="tm_nc" min="1000000" maxlength="99999999999999" required>
                     </div>
                 </div>                                         
-                <select class="form-select" aria-label="Default select example" name="t_b" id="t_b" required>
-                    <option selected disabled value="">Seleccionar banco</option>
+                <select class="form-select" aria-label="Default select example" name="tm_b" id="tm_b" required>
+                    <option selected disabled value="">Banco actual: {{x.16}}</option>
                     {% for b in bancos %}
                     <option value="{{b.0}}">{{b.1}}</option>
                     {% endfor %}
                 </select>
                 <br>
-                <select class="form-select" aria-label="Default select example" name="t_tc" id="t_tc" required>
-                    <option selected disabled value="">Seleccionar tipo de cuenta</option>
+                <select class="form-select" aria-label="Default select example" name="tm_tc" id="tm_tc" required>
+                    <option selected disabled value="">Tipo de cuenta actual: {{x.17}}</option>
                     {% for tc in t_cuenta %}
                     <option value="{{tc.0}}">{{tc.1}}</option>
                     {% endfor %}
                 </select>
                 <br>
-                <select class="form-select" aria-label="Default select example" name="t_temp" id="t_temp" required>
-                    <option selected disabled value="">Seleccionar tipo de empleado</option>
+                <select class="form-select" aria-label="Default select example" name="tm_temp" id="tm_temp" required>
+                    <option selected disabled value="">Rol actual: {{x.15}}</option>
                     {% for te in t_empleado %}
                     <option value="{{te.0}}">{{te.1}}</option>
                     {% endfor %}
@@ -109,6 +110,7 @@
                     <button class="btn btn-success" type="submit" >Guardar</button>
                     <button class="btn btn-secondary" type="reset">Limpiar</button>
                 </div>
+                {% endfor %}
             </form>
         </div>
     </div>
@@ -131,11 +133,10 @@
                 <th scope="col">Banco</th>
                 <th scope="col">Tipo de cuenta</th>
                 <th scope="col">Tipo de empleado</th>
-                <th scope="col">Opciones</th>
             </tr>
             </thead>
             <tbody>
-            {% for t in trabajadores %}
+            {% for t in trabajador %}
             <tr>
                 <th scope="row">{{t.18}}</th>
                 <td>{{t.0}} - {{t.1}}</td>
@@ -152,10 +153,6 @@
                 <td>{{t.16}}</td>
                 <td>{{t.17}}</td>
                 <td>{{t.15}}</td>
-                <td>
-                    <a href="{% url 'modificar_trabajadores' t.0 %}"" class="btn btn-warning">Modificar</a>
-                    <a onclick="confirmarEliminar({{t.0}})" class="btn btn-danger" style="margin-top: 4px;">Eliminar</a>
-                </td>
             </tr>
             {% endfor %}
             </tbody>

@@ -125,6 +125,11 @@ def agregar_trabajador(t_rut, t_dv, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te,
     cursor.callproc('INSERTAR_TRABAJADOR', [t_rut, t_dv, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc, salida])
     return salida.getvalue()
 
+def modificar_trabajador(id, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc):
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('MODIFICAR_TRABAJADOR', [id, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc, salida])
+    return salida.getvalue()
+
 def adm_trabajadores(request):
     data = {
         'a_t': 'active',
@@ -156,6 +161,36 @@ def adm_trabajadores(request):
             data['mensajeError'] = 'El trabajador no fue agregado'
         data['trabajadores'] = listado_trabajadores() 
     return render(request, 'administradores/adm_trabajadores.html', data)   
+
+def adm_modificar_trabajadores(request, id):
+    data = {
+        'a_t': 'active',
+        't_empleado': listado_tipo_empleado(),
+        'bancos': listado_banco(),
+        't_cuenta': listado_tipo_cuenta(),
+        'trabajador': listar_trabajador(id)
+    }
+    if request.method == 'POST':
+        tm_pn = request.POST.get('tm_pn')
+        tm_sn = request.POST.get('tm_sn')
+        tm_pa = request.POST.get('tm_pa')
+        tm_sa = request.POST.get('tm_sa')
+        tm_c = request.POST.get('tm_c')
+        tm_p = request.POST.get('tm_p')
+        tm_d = request.POST.get('tm_d')
+        tm_te = request.POST.get('tm_te')
+        tm_s = request.POST.get('tm_s')
+        tm_nc = request.POST.get('tm_nc')
+        tm_temp = request.POST.get('tm_temp')
+        tm_b = request.POST.get('tm_b')
+        tm_tc = request.POST.get('tm_tc')
+        salida = modificar_trabajador(id, tm_pn, tm_sn, tm_pa, tm_sa, tm_c, tm_p, tm_d, tm_te, tm_s, tm_nc, tm_temp, tm_b, tm_tc); 
+        if salida == 1:
+            data['mensaje'] = "Trabajador modificado"
+        else:
+            data['mensajeError'] = 'El trabajador no fue modificado' 
+        return redirect(to="adm_trabajadores")
+    return render(request, 'administradores/adm_trabajadores_modificar.html', data)   
 
 def eliminar_trabajador(request, id):
     cursor.callproc('ELIMINAR_TRABAJADOR', [id])
