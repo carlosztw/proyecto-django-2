@@ -221,12 +221,98 @@ def listado_tipo_cuenta():
     return lista
 ### FIN CRUD TRABAJADORES ###
 
+### CRUD CLIENTES ###
+def listado_clientes():
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("OBTENER_CLIENTES", [out_cur])
+    
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def listar_cliente(id):
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("OBTENER_CLIENTE", [id, out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te):
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('INSERTAR_CLIENTE', [c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te, salida])
+    return salida.getvalue()
+
+def modificar_cliente(id, c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te):
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('MODIFICAR_CLIENTE', [id, c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te, salida])
+    return salida.getvalue()
+
+def adm_clientes(request):
+    data = {
+        'a_c': 'active'
+    }
+    if request.method == 'POST':
+        c_rut = request.POST.get('c_rut')
+        c_dv = request.POST.get('c_dv')
+        c_pn = request.POST.get('c_pn')
+        c_sn = request.POST.get('c_sn')
+        c_pa = request.POST.get('c_pa')
+        c_sa = request.POST.get('c_sa')
+        c_c = request.POST.get('c_c')
+        c_p = request.POST.get('c_p')
+        c_d = request.POST.get('c_d')
+        c_te = request.POST.get('c_te')
+        salida = agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te); 
+        if salida == 1:
+            data['mensaje'] = 'Cliente agregado'
+        else:   
+            data['mensajeError'] = 'El cliente no fue agregado'
+        data['clientes'] = listado_clientes() 
+    return render(request, 'administradores/adm_clientes.html', data)   
+
+def adm_modificar_clientes(request, id):
+    data = {
+        'a_c': 'active',
+        'cliente': listar_cliente(id)
+    }
+    if request.method == 'POST':
+        cm_rut = request.POST.get('cm_rut')
+        cm_dv = request.POST.get('cm_dv')
+        cm_pn = request.POST.get('cm_pn')
+        cm_sn = request.POST.get('cm_sn')
+        cm_pa = request.POST.get('cm_pa')
+        cm_sa = request.POST.get('cm_sa')
+        cm_c = request.POST.get('cm_c')
+        cm_p = request.POST.get('cm_p')
+        cm_d = request.POST.get('cm_d')
+        cm_te = request.POST.get('cm_te')
+        salida = modificar_cliente(id, cm_rut, cm_dv, cm_pn, cm_sn, cm_pa, cm_sa, cm_c, cm_p, cm_d, cm_te); 
+        if salida == 1:
+            data['mensaje'] = "Cliente modificado"
+        else:
+            data['mensajeError'] = 'El Cliente no fue modificado' 
+        return redirect(to="adm_clientes")
+    return render(request, 'administradores/adm_clientes_modificar.html', data)   
+
+def eliminar_cliente(request, id):
+    cursor.callproc('ELIMINAR_CLIENTE', [id])
+    return redirect(to="adm_clientes")
+
+
+### FIN CRUD CLIENTES ###
+
 
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
 
 def adm_clientes(request):
+    data = {
+    'clientes':listado_clientes(),
+    'clie': navbar()
+    }  
     return render(request, 'administradores/adm_clientes.html', {'a_c': 'active'}) 
 
 def adm_servicios(request):
