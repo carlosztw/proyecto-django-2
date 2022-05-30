@@ -1,0 +1,3 @@
+https://blogs.oracle.com/opal/post/connecting-to-oracle-cloud-autonomous-database-with-django
+
+-Instant Client 

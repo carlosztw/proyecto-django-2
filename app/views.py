@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.core.paginator import Paginator
+from django.http import Http404
 import cx_Oracle
 # Create your views here.
 django_cursor = connection.cursor()
@@ -18,8 +19,17 @@ def navbar():
 
 ### CRUD PRODUCTOS ###
 def productos(request):
+    listadoProductos = listado_productos()
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(listadoProductos, 9)
+        listadoProductos = paginator.page(page)
+    except:
+        raise Http404
     data = {
-        'productos':listado_productos(),
+        'productos':listadoProductos,
+        'paginator': paginator,  
         'prod': navbar()
     }    
     return render(request, 'app/productos.html', data)  
@@ -50,7 +60,7 @@ def modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen):
     cursor.callproc('ACTUALIZAR_PRODUCTO', [id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen, salida])
     return salida.getvalue()
 
-def adm_modificar_producto(request, id):
+def adm_modificar_producto(request, id):    
     data = {
         'producto':listar_producto(id),
         'a_p': navbar(),
@@ -75,8 +85,18 @@ def eliminar_producto(request, id):
     return redirect(to="adm_productos")
 
 def adm_productos(request):
+    listadoProductos = listado_productos()
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(listadoProductos, 9)
+        listadoProductos = paginator.page(page)
+    except:
+        raise Http404
+
     data = {
-        'productos':listado_productos(),
+        'productos':listadoProductos,
+        'paginator': paginator,
         'a_p': navbar(),
         'categorias': listado_tipo_productos(),
     }
@@ -231,5 +251,3 @@ def adm_clientes(request):
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
-
-

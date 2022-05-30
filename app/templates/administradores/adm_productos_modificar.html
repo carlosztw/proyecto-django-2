@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <select class="form-select" aria-label="Default select example" name="pm_tp" id="pm_tp" required>
-                    <option selected disabled value="">{{p.4}}</option>
+                    <option selected value="{{p.4}}">Tipo de producto actual: {{p.6}}</option>
                     {% for i in categorias %}
                     <option value="{{i.0}}">{{i.1}} - {{i.0}}</option>
                     {% endfor %}
@@ -73,7 +73,7 @@
                 <h10>Stock: {{p.3}} uds.</h10>
                 <h3>{{p.1}}</h3>
                 <h4>${{p.2}}</h4>
-                <h5>Tipo de Producto ID: {{p.4}}</h4>
+                <h5>TP: {{p.6}}</h4>
             </div>
             {% endfor %}
         </div>

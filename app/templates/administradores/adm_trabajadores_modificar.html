@@ -27,25 +27,25 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="staticEmail" class="col-form-label">Primer nombre:</label>
-                        <input class="form-control" type="text" value="{{x.2}}" placeholder="Primer nombre del trabajador" name="tm_pn" id="tm_pn" minlength="5" maxlength="50" required>
+                        <input class="form-control" type="text" value="{{x.2}}" placeholder="Primer nombre del trabajador" name="tm_pn" id="tm_pn" minlength="4" maxlength="50" required>
                     </div>
                     <div class="col-md-6">
                         <label for="staticEmail" class="col-form-label">Segundo nombre:</label>
                         {% if x.3 == None %}
-                        <input class="form-control" type="text" placeholder="Segundo nombre del trabajador" name="tm_sn" id="tm_sn" minlength="5" maxlength="50">
+                        <input class="form-control" type="text" placeholder="Segundo nombre del trabajador" name="tm_sn" id="tm_sn" minlength="4" maxlength="50">
                         {% else %}
-                        <input class="form-control" type="text" value="{{x.3}}" placeholder="Segundo nombre del trabajador" name="tm_sn" id="tm_sn" minlength="5" maxlength="50">
+                        <input class="form-control" type="text" value="{{x.3}}" placeholder="Segundo nombre del trabajador" name="tm_sn" id="tm_sn" minlength="4" maxlength="50">
                         {% endif %}
                     </div>           
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6">
                             <label for="staticEmail" class="col-form-label">Primer apellido:</label>
-                            <input class="form-control" type="text" value="{{x.4}}" placeholder="Primer apellido del trabajador" name="tm_pa" id="tm_pa" minlength="5" maxlength="50" required>
+                            <input class="form-control" type="text" value="{{x.4}}" placeholder="Primer apellido del trabajador" name="tm_pa" id="tm_pa" minlength="4" maxlength="50" required>
                     </div>
                     <div class="col-md-6">
                             <label for="staticEmail" class="col-form-label">Segundo apellido:</label>
-                            <input class="form-control" type="text" value="{{x.5}}" placeholder="Segundo apellido del trabajador" name="tm_sa" id="tm_sa" minlength="5" maxlength="50" required>
+                            <input class="form-control" type="text" value="{{x.5}}" placeholder="Segundo apellido del trabajador" name="tm_sa" id="tm_sa" minlength="4" maxlength="50" required>
                     </div>
                 </div>
                 <br>
@@ -86,21 +86,21 @@
                     </div>
                 </div>                                         
                 <select class="form-select" aria-label="Default select example" name="tm_b" id="tm_b" required>
-                    <option selected disabled value="">Banco actual: {{x.16}}</option>
+                    <option selected value="{{x.13}}">Banco actual: {{x.16}}</option>
                     {% for b in bancos %}
                     <option value="{{b.0}}">{{b.1}}</option>
                     {% endfor %}
                 </select>
                 <br>
                 <select class="form-select" aria-label="Default select example" name="tm_tc" id="tm_tc" required>
-                    <option selected disabled value="">Tipo de cuenta actual: {{x.17}}</option>
+                    <option selected value="{{x.14}}">Tipo de cuenta actual: {{x.17}}</option>
                     {% for tc in t_cuenta %}
                     <option value="{{tc.0}}">{{tc.1}}</option>
                     {% endfor %}
                 </select>
                 <br>
                 <select class="form-select" aria-label="Default select example" name="tm_temp" id="tm_temp" required>
-                    <option selected disabled value="">Rol actual: {{x.15}}</option>
+                    <option selected value="{{x.12}}">Rol actual: {{x.15}}</option>
                     {% for te in t_empleado %}
                     <option value="{{te.0}}">{{te.1}}</option>
                     {% endfor %}

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#w%$m84ik%u9gis_&c8h#4xr2_1iltc4b^47#en)x*2v(_9u$=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'InnovaTech.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': { 
             'context_processors': [
@@ -74,17 +74,25 @@ WSGI_APPLICATION = 'InnovaTech.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'ORCL',
-        'USER': 'innova',
-        'PASSWORD': 'duoc2022',
-        'HOST': 'innovadb2.cdevfpfg3pvk.sa-east-1.rds.amazonaws.com',
-        'PORT': '1521',
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.oracle',
+#        'NAME': 'ORCL',
+#        'USER': 'innova',
+#        'PASSWORD': 'duoc2022',
+#        'HOST': 'innovadb2.cdevfpfg3pvk.sa-east-1.rds.amazonaws.com',
+#        'PORT': '1521',
+#    }
+#}
+DATABASES={
+    'default':
+    {
+    'ENGINE':'django.db.backends.oracle',
+    'NAME':'dbinnova_high',
+    'USER':'admin', 
+    'PASSWORD':'Duoc20222022',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
