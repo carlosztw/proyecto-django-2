@@ -93,20 +93,6 @@ DATABASES={
     'USER':'admin', 
     'PASSWORD':'Duoc20222022',
     }
-=======
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/orcl',
-        'USER': 'innova',
-        'PASSWORD': 'duoc2022',
-        'TEST': {
-            'USER': 'default_test',
-            'TBLSPACE': 'default_test_tbls',
-            'TBLSPACE_TMP': 'default_test_tbls_tmp',
-        },
-    },
->>>>>>> babc0d627b2b835023dfb55ef74dfbeb7800a47f
 }
 
 # Password validation
