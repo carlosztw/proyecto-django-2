@@ -271,7 +271,8 @@ def modificar_cliente(id, c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_
 
 def adm_clientes(request):
     data = {
-        'a_c': 'active'
+        'clientes':listado_clientes(),
+        'clie': navbar()
     }
     if request.method == 'POST':
         c_rut = request.POST.get('c_rut')
@@ -323,17 +324,8 @@ def eliminar_cliente(request, id):
 
 ### FIN CRUD CLIENTES ###
 
-
-
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
-
-def adm_clientes(request):
-    data = {
-    'clientes':listado_clientes(),
-    'clie': navbar()
-    }  
-    return render(request, 'administradores/adm_clientes.html', {'a_c': 'active'}) 
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   

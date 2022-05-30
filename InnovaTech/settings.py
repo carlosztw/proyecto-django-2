@@ -73,18 +73,28 @@ WSGI_APPLICATION = 'InnovaTech.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-<<<<<<< HEAD
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.oracle',
-#        'NAME': 'ORCL',
-#        'USER': 'innova',
-#        'PASSWORD': 'duoc2022',
-#        'HOST': 'innovadb2.cdevfpfg3pvk.sa-east-1.rds.amazonaws.com',
-#        'PORT': '1521',
-#    }
-#}
+""" # BD AWS
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'ORCL',
+        'USER': 'innova',
+        'PASSWORD': 'duoc2022',
+        'HOST': 'innovadb2.cdevfpfg3pvk.sa-east-1.rds.amazonaws.com',
+        'PORT': '1521',
+    }
+}
+"""
+""" # BD LOCAL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': '127.0.0.1:1521/xe',
+        'USER': 'innova',
+        'PASSWORD': 'duoc2022',
+    },
+}
+"""
 DATABASES={
     'default':
     {
