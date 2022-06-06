@@ -1,8 +1,16 @@
+from ast import Return
+from multiprocessing import context
+from pyexpat.errors import messages
+from re import template
+from ssl import SSLSession
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.core.paginator import Paginator
 from django.http import Http404
 import cx_Oracle
+from app.carrito import Carrito
+ 
+from app.models import Producto, TipoProducto, TipoServicio
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
@@ -122,6 +130,71 @@ def listado_tipo_productos():
         lista.append(i)
     return lista
 ### FIN CRUD PRODUCTOS ###
+
+###  ###
+def buscar_catg (request,slug):
+    template_name="base.html"
+    catg=TipoProducto.objects.get(slug=slug)
+    categorias=TipoProducto.objects.filter(activo=True)
+    productos=Producto.objects.filter(activo=True,TipoProducto=catg)
+    context = {"productos":productos, "categorias":categorias}
+
+    return render(request,template_name,context)
+
+def buscador(request):
+    template_name="base.html"
+    b=request.GET["b"]
+    productos=Producto.objects.filter(activo=True,nombre_icontains=b)
+    categorias=TipoProducto.objects.filter(activo=True,nombre_icontains=b)
+    servicios=TipoServicio.objects.filter(activo=True,nombre_icontains=b)
+    context = {"productos":productos,"categorias":categorias,"servicios":servicios}
+
+    return render(request,template_name,context)
+###  ###
+
+## CARRITO con SLUG ##
+ #def cart(request,slug):
+    product= Producto.objects.get(slug=slug)
+
+    initial = {"items":[],"precio":0,"count":0}
+    session=request.session.get("data",initial)
+
+    if slug in session["items"]:
+        messages.error(request,"Producto ya existe en el carrito")
+    else:
+        session["items"].append(slug)
+        session["precio"]+= float(product.precio)
+        session["count"]*=1
+        request.session["data"]=session
+        messages.succes(request,"Agregado Exitosamente")
+    return redirect("app:detail",slug)
+## FIN CARRITO ##
+
+## CARRITO ##
+def agregar_cart (request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.agregar(producto)
+    return redirect("inicio")
+
+def eliminar_cart(request, id_producto):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id_producto)
+    carrito.eliminar(producto)
+    return redirect("inicio")
+
+def restar_cart(request, id_producto):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id_producto)
+    carrito.restar(producto)
+    return redirect("inicio")
+
+def limpiar_cart(request):
+    carrito = Carrito(request)
+    carrito.limpiar()
+    return redirect ("inicio")
+
+## CARRITO  ##
 
 ### CRUD TRABJADORES ###
 def listado_trabajadores():
@@ -323,6 +396,17 @@ def eliminar_cliente(request, id):
 
 
 ### FIN CRUD CLIENTES ###
+
+### CARRITO DE COMPRAS ###
+
+def carrito(request):
+    return render(request, 'app/carrito.html', {'carrito': 'active'})
+
+
+
+
+
+### FIN CARRITO###
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
