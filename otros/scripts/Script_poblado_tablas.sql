@@ -63,6 +63,9 @@ INSERT INTO empleado VALUES ( 19742774, 7, 'Mila', 'Alejandra', 'Darat', 'Morale
 INSERT INTO cliente VALUES (8117450, 4, 'Rosario', ' ', 'Soto', ' ', 'rsoto@gmail.com', 'cliente123', 'Puente alto', 943526784);
 
 ---------------------------------------------------------------
+DROP SEQUENCE seq_servicio;
+CREATE SEQUENCE seq_servicio START WITH 10 INCREMENT BY 10;
+INSERT INTO servicio VALUES(SEQ_SERVICIO.nextval,'Ernesto Arredondo','ern.arredondo@gmail.com','mi computador normalmente envia un fondo azul en donde se cae el sistema','01/06/2022','https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bsodwindows10.png/640px-Bsodwindows10.png',1);
 
 
 ---------------------------------------------------------------

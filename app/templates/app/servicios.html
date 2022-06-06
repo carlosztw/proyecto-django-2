@@ -1,6 +1,76 @@
 {% extends 'app/base.html' %}
 {% block titulo %} Servicios {% endblock %}
 {% load static %}
-{% block contenido %}
-<h1> Servicios </h1>
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/productos.css' %}">
 {% endblock %}
+{% block contenido %}
+<div>   
+    <br>
+    <h1 style="text-align: center; color:#0D6EFD; "> Servicios </h1>  
+</div>
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-7 col-lg-7 col-xl-5">
+        <form action="" method="POST" enctype="multipart/form-data" class="needs-validation" id="p_form" novalidate>
+            {% csrf_token %}
+            <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Nombre y Apellido:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" placeholder="Ingrese Nombre Y Aperllido" name="" id="" minlength="4" maxlength="100" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Correo:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" placeholder="Ingrese Correo " name="" id="" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Comentario:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" placeholder="Ingrese Comentario " name="" id="" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Fecha:</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="date" placeholder="Ingrese Fecha " name="" id="" required>
+        </div>
+        </div>
+            <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Imagen:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="url" placeholder="Ingrese URL de la imagen (opcional)" name="" id="">
+                </div>
+            </div>
+          
+            <select class="form-select" aria-label="Default select example" name="" id="" required>
+                <option selected disabled value="">Seleccionar tipo de Servicio</option>
+                {% for i in categorias %}
+                <option value="{{i.0}}">{{i.1}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <div class="col-12 text-center">
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <button class="btn btn-secondary" type="reset">Limpiar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </br>
+</div>
+
+{% endblock %}
+
+ 
+
+
+
+
+
+
+
+
+
+
