@@ -90,8 +90,10 @@ ALTER TABLE producto ADD CONSTRAINT producto_pk PRIMARY KEY ( id_producto );
 
 CREATE TABLE resena (
     id_resena    INTEGER NOT NULL,
-    resena       VARCHAR2(250) NOT NULL,
-    id_producto  INTEGER NOT NULL
+    usuario_resena VARCHAR2(100) NOT NULL,
+    comentario VARCHAR2(250) NOT NULL,
+    valoracion NUMBER(1,0) DEFAULT 0,
+    id_producto  INTEGER NOT NULL 
 );
 
 ALTER TABLE resena ADD CONSTRAINT resena_pk PRIMARY KEY ( id_resena );

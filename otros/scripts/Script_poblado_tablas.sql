@@ -63,7 +63,8 @@ INSERT INTO empleado VALUES ( 19742774, 7, 'Mila', 'Alejandra', 'Darat', 'Morale
 INSERT INTO cliente VALUES (8117450, 4, 'Rosario', ' ', 'Soto', ' ', 'rsoto@gmail.com', 'cliente123', 'Puente alto', 943526784);
 
 ---------------------------------------------------------------
-
+DROP SEQUENCE seq_resn;
+CREATE SEQUENCE seq_resn START WITH 1;
 
 ---------------------------------------------------------------
 

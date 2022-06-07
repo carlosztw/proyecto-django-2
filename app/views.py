@@ -76,12 +76,19 @@ def adm_modificar_producto(request, id):
         if salida == 1:
             data['mensaje'] = "Producto modificado"
         else:
-            data['mensajeError'] = 'El producto no fue modificado' 
+            data['mensaje'] = 'El producto no fue modificado' 
         return redirect(to="adm_productos")
     return render(request, 'administradores/adm_productos_modificar.html', data)
 
 def eliminar_producto(request, id):
-    cursor.callproc('ELIMINAR_PRODUCTO', [id])
+    data = {}
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('ELIMINAR_PRODUCTO', [id, salida])
+    salida = salida.getvalue()
+    if salida == 1:
+        data['mensaje'] = "Producto eliminado"
+    else:
+        data['mensaje'] = 'El producto no fue eliminado' 
     return redirect(to="adm_productos")
 
 def adm_productos(request):
@@ -110,7 +117,7 @@ def adm_productos(request):
         if salida == 1:
             data['mensaje'] = "Producto agregado"
         else:
-            data['mensajeError'] = 'El producto no fue agregado' 
+            data['mensaje'] = 'El producto no fue agregado' 
         data['productos'] = listado_productos() 
     return render(request, 'administradores/adm_productos.html', data) 
   
@@ -178,7 +185,7 @@ def adm_trabajadores(request):
         if salida == 1:
             data['mensaje'] = 'Trabajador agregado'
         else:   
-            data['mensajeError'] = 'El trabajador no fue agregado'
+            data['mensaje'] = 'El trabajador no fue agregado'
         data['trabajadores'] = listado_trabajadores() 
     return render(request, 'administradores/adm_trabajadores.html', data)   
 
@@ -208,7 +215,7 @@ def adm_modificar_trabajadores(request, id):
         if salida == 1:
             data['mensaje'] = "Trabajador modificado"
         else:
-            data['mensajeError'] = 'El trabajador no fue modificado' 
+            data['mensaje'] = 'El trabajador no fue modificado' 
         return redirect(to="adm_trabajadores")
     return render(request, 'administradores/adm_trabajadores_modificar.html', data)   
 
@@ -264,15 +271,15 @@ def agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te):
     cursor.callproc('INSERTAR_CLIENTE', [c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te, salida])
     return salida.getvalue()
 
-def modificar_cliente(id, c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te):
+def modificar_cliente(id, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te):
     salida = cursor.var(cx_Oracle.NUMBER)
-    cursor.callproc('MODIFICAR_CLIENTE', [id, c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te, salida])
+    cursor.callproc('ACTUALIZAR_CLIENTE', [id, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te, salida])
     return salida.getvalue()
 
 def adm_clientes(request):
     data = {
         'clientes':listado_clientes(),
-        'clie': navbar()
+        'a_c': navbar()
     }
     if request.method == 'POST':
         c_rut = request.POST.get('c_rut')
@@ -289,18 +296,16 @@ def adm_clientes(request):
         if salida == 1:
             data['mensaje'] = 'Cliente agregado'
         else:   
-            data['mensajeError'] = 'El cliente no fue agregado'
+            data['mensaje'] = 'El cliente no fue agregado'
         data['clientes'] = listado_clientes() 
     return render(request, 'administradores/adm_clientes.html', data)   
 
 def adm_modificar_clientes(request, id):
     data = {
-        'a_c': 'active',
+        'a_c': navbar(),
         'cliente': listar_cliente(id)
     }
     if request.method == 'POST':
-        cm_rut = request.POST.get('cm_rut')
-        cm_dv = request.POST.get('cm_dv')
         cm_pn = request.POST.get('cm_pn')
         cm_sn = request.POST.get('cm_sn')
         cm_pa = request.POST.get('cm_pa')
@@ -309,11 +314,11 @@ def adm_modificar_clientes(request, id):
         cm_p = request.POST.get('cm_p')
         cm_d = request.POST.get('cm_d')
         cm_te = request.POST.get('cm_te')
-        salida = modificar_cliente(id, cm_rut, cm_dv, cm_pn, cm_sn, cm_pa, cm_sa, cm_c, cm_p, cm_d, cm_te); 
+        salida = modificar_cliente(id, cm_pn, cm_sn, cm_pa, cm_sa, cm_c, cm_p, cm_d, cm_te); 
         if salida == 1:
             data['mensaje'] = "Cliente modificado"
         else:
-            data['mensajeError'] = 'El Cliente no fue modificado' 
+            data['mensaje'] = 'El cliente no fue modificado' 
         return redirect(to="adm_clientes")
     return render(request, 'administradores/adm_clientes_modificar.html', data)   
 
@@ -329,3 +334,114 @@ def servicios(request):
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
+
+
+### CRUD RESEÑAS ###
+
+def agregar_resena(r_u, r_c, r_v, id):
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('INSERTAR_RESENA', [r_u, r_c, r_v, id, salida])
+    return salida.getvalue()
+
+def listar_resenas(id):
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("OBTENER_RESENAS", [id, out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def resenas(request, id):
+    data = {
+        'producto': listar_producto(id),
+        'prod': navbar(),
+        'resena': listar_resenas(id)
+    }
+    if request.method == 'POST':
+        r_u = request.POST.get('r_u')
+        r_c = request.POST.get('r_c')
+        r_v = request.POST.get('rating')
+        salida = agregar_resena(r_u, r_c, r_v, id);
+        if salida == 1:
+            data['mensaje'] = 'Reseña agregada'
+        else:   
+            data['mensaje'] = 'La reseña no fue agregada'
+        data['resena'] = listar_resenas(id)     
+    return render(request, 'app/resenas.html', data)
+
+def adm_resenas_1(request):
+    listadoProductos = listado_productos()
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(listadoProductos, 9)
+        listadoProductos = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+        'productos':listadoProductos,
+        'paginator': paginator,
+        'a_r': navbar()
+    }
+
+    return render(request, 'administradores/adm_resenas_1.html', data) 
+
+def adm_resenas_2(request, id):
+    data = {
+        'producto': listar_producto(id),
+        'a_r': navbar(),
+        'resena': listar_resenas(id)
+    }
+    if request.method == 'POST':
+        r_u = request.POST.get('r_u')
+        r_c = request.POST.get('r_c')
+        r_v = request.POST.get('rating')
+        salida = agregar_resena(r_u, r_c, r_v, id);
+        if salida == 1:
+            data['mensaje'] = 'Reseña agregada'
+        else:   
+            data['mensaje'] = 'La reseña no fue agregada'
+        data['resena'] = listar_resenas(id)     
+    return render(request, 'administradores/adm_resenas_2.html', data)
+
+def eliminar_resena(request, id):
+    data = {}
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('ELIMINAR_RESENA', [id, salida])
+    salida = salida.getvalue()
+    if salida == 1:
+        data['mensaje'] = "Reseña eliminada"
+    else:
+        data['mensaje'] = 'La reseña no fue eliminada' 
+    return redirect(request.META['HTTP_REFERER'])
+
+def modificar_resena(id, rm_c, rm_v):
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('ACTUALIZAR_RESENA', [id, rm_c, rm_v, salida])
+    return salida.getvalue()
+
+def listar_resena(id):
+    out_cur = django_cursor.connection.cursor()
+    cursor.callproc("OBTENER_RESENA", [id, out_cur])
+    lista = []
+    for i in out_cur:
+        lista.append(i)
+    return lista
+
+def adm_modificar_resena(request, id):
+    data = {
+        'a_r': navbar(),
+        'resena': listar_resena(id)
+    }
+    if request.method == 'POST':
+        rm_c = request.POST.get('rm_c')
+        rm_v = request.POST.get('rm_v')
+        salida = modificar_resena(id, rm_c, rm_v);
+        if salida == 1:
+            data['mensaje'] = "Reseña modificada"
+        else:
+            data['mensaje'] = 'La reseña no fue modificada'
+        data['resena'] = listar_resena(id) 
+    return render(request, 'administradores/adm_resenas_modificar.html', data)
+### FIN CRUD RESEÑAS ###

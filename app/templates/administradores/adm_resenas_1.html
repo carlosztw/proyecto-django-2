@@ -1,0 +1,32 @@
+{% extends 'app/base.html' %}
+{% block titulo %} Administrar Reseñas {% endblock %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/productos.css' %}">
+{% endblock %}
+{% block contenido %}
+<div>   
+    <br>
+    <h1 style="text-align: center; color:#0D6EFD; "> Administrar Reseñas </h1>  
+</div>
+<div class="container-fluid cardprod">
+    <div class="row">
+        <!-- CARD DE PRODUCTOS -->
+        <div class="gallery">
+            {% for p in productos %}
+            <div class="content">
+                {% if p.5 %}
+                <a href="{% url 'adm_resenas_2' p.0 %}"> <img src="{{p.5}}" onerror="this.src='https://live.staticflickr.com/65535/52085597584_018d97d235_m.jpg'"></a>
+                {% else %}
+                <a href="{% url 'adm_resenas_2' p.0 %}"><img src="{% static 'app/img/noimagen.jpg' %}"></a>
+                {% endif %}
+                <h10>Stock: {{p.3}} uds.</h10>
+                <h3>{{p.1}}</h3>
+                <h4>${{p.2}}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'app/productos_paginator.html' %}
+</div>
+{% endblock %}
