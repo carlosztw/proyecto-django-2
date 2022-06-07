@@ -63,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processor.total_carrito',
             ],
         },
     },
@@ -85,17 +86,17 @@ DATABASES = {
     }
 }
 """
-""" # BD LOCAL
+ # BD LOCAL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/xe',
+        'NAME': '127.0.0.1:1521/orcl',
         'USER': 'innova',
         'PASSWORD': 'duoc2022',
     },
 }
-"""
-DATABASES={
+
+""" DATABASES={
     'default':
     {
     'ENGINE':'django.db.backends.oracle',
@@ -103,7 +104,7 @@ DATABASES={
     'USER':'admin', 
     'PASSWORD':'Duoc20222022',
     }
-}
+} """
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

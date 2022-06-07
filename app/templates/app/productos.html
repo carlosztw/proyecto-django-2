@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'app/css/productos.css' %}">
 {% endblock %}
 {% block contenido %}
-<div>   
+<div>  
     <br>
     <h1 style="text-align: center; color:#0D6EFD; "> Productos </h1>  
 </div>
@@ -28,7 +28,7 @@
                 {% elif p.4 == 1 %}
                 <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
                 {% else %}
-                <button class="buy-1">Agregar al carro</button> 
+                <button href="{% url 'add' p.0 %}" class="buy-1">Agregar al carro</button> 
                 {% endif %}
             </div>
             {% endfor %}

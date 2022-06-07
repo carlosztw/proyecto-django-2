@@ -100,13 +100,16 @@ ALTER TABLE resena ADD CONSTRAINT resena_pk PRIMARY KEY ( id_resena );
 
 CREATE TABLE servicio (
     id_servicio       INTEGER NOT NULL,
+    nombre_p_ser      VARCHAR2 (60) NOT NULL,
+    correo_ser        VARCHAR2(500) NOT NULL,
+    comentario_se     VARCHAR2 (1000) NOT NULL,
     fecha_ser         DATE NOT NULL,
-    adjunto_ser       BLOB,
-    comentario        VARCHAR2(500) NOT NULL,
+    img_ser           VARCHAR2(500),
     id_tipo_servicio  INTEGER NOT NULL
 );
 
 ALTER TABLE servicio ADD CONSTRAINT servicio_pk PRIMARY KEY ( id_servicio );
+
 
 CREATE TABLE servicio_detalle (
     id_orden     INTEGER NOT NULL,
