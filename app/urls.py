@@ -5,16 +5,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', inicio, name='inicio'),
     path('productos/', productos, name='productos'),
-<<<<<<< HEAD
     path('resenas/<id>/', resenas, name='resenas'),
-=======
     path('carrito/', carrito, name='carrito'),
     path('agregarcart/<int:id_producto>/', agregar_cart, name='add'),
     path('eliminarcart/<int:id_producto>/', eliminar_cart, name='del'),
     path('restarcart/<int:id_producto>/', restar_cart, name='sub'),
     path('limpiarcart/', limpiar_cart, name='cls'),
-
->>>>>>> 29df7879ce2b99e5a9b904846a9e9679c5d78520
     path('servicios/', servicios, name='servicios'),
     path('adm-clientes/', adm_clientes, name='adm_clientes'),
     path('adm-clientes/modificar/<id>/', adm_modificar_clientes, name='modificar_cliente'),
