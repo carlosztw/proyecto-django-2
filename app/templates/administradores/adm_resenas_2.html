@@ -1,0 +1,97 @@
+{% extends 'app/base.html' %}
+{% block titulo %} Administrar Reseñas {% endblock %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/productos.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/resena.css' %}">
+{% endblock %}
+{% block js %}
+<script src="{% static 'app/js/resena.js'%}"></script>
+<script src="{% static 'app/js/adm_resena.js'%}"></script>
+{% endblock %}
+{% block contenido %}
+<div>   
+    <br>
+    <h1 style="text-align: center; color:#0D6EFD; "> Reseñas </h1>  
+</div>
+<div class="container-fluid cardprod">
+    <div class="row">
+        <!-- CARD DE PRODUCTOS -->
+        <div class="gallery">
+            {% for p in producto %}
+            <div class="content">
+                {% if p.5 %}
+                <img src="{{p.5}}" onerror="this.src='https://live.staticflickr.com/65535/52085597584_018d97d235_m.jpg'">
+                {% else %}
+                <img src="{% static 'app/img/noimagen.jpg' %}">
+                {% endif %}
+                <h10>Stock: {{p.3}} uds.</h10>
+                <h3>{{p.1}}</h3>
+                <h4>${{p.2}}</h4>
+                {% if p.4 == 0 %}
+                <button style="background-color: black;" class="buy-1" disabled>AGOTADO</button> 
+                {% elif p.4 == 1 %}
+                <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-12">
+            <h4 class="resena">Reseñas</h4>
+            {% for r in resena %}
+            
+            <div class="mb-3">
+                <i class="fa-solid fa-user"></i>
+                <h7 style="padding-left: 5px; font-weight: bold;">{{ r.1 }}</h7> 
+                <i class="fa-solid fa-star {% if r.3 > 4 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 3 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 2 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 1 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 0 %} checked {% endif %}" style="float: right;"></i>
+            </div>
+            <div class="mb-3">
+                <p style="text-align: justify;">{{ r.2}}</p>
+            </div>
+            <div>
+                <a href="{% url 'modificar_resena' r.0 %}" class="btn btn-warning" style="font-size: 14px;">Modificar</a>
+                <a onclick="confirmarEliminar({{r.0}})" class="btn btn-danger" style="font-size: 14px;">Eliminar</a>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <h4 class="resena">Escribe tu reseña</h4>
+            <form action="" method="POST" class="needs-validation" id="r_form" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Correo o Usuario</label>
+                    <input type="text" class="form-control" id="r_u" name="r_u" placeholder="nombre@ejemplo.com o nombre de usuario" maxlength="100" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Comentario</label>
+                    <textarea class="form-control" id="r_c" name="r_c" rows="5"  placeholder="Escriba su reseña" maxlength="250" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Valoración</label><br>
+                    <span class="star-rating">
+                        <input type="radio" name="rating" value="1" required><i></i>
+                        <input type="radio" name="rating" value="2" required><i></i>
+                        <input type="radio" name="rating" value="3" required><i></i>
+                        <input type="radio" name="rating" value="4" required><i></i>
+                        <input type="radio" name="rating" value="5" required><i></i>
+                    </span>                   
+                </div>
+                <div class="col-12 text-center">
+                    <button class="btn btn-success" type="submit">Enviar</button>
+                    <button class="btn btn-secondary" type="reset">Limpiar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

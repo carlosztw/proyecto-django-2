@@ -1,0 +1,74 @@
+{% extends 'app/base.html' %}
+{% block titulo %} Modificar Reseña {% endblock %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/resena.css' %}">
+{% endblock %}
+{% block js %}
+<script src="{% static 'app/js/resena.js'%}"></script>
+{% endblock %}
+{% block contenido %}
+<div>   
+    <br>
+    <h1 style="text-align: center; color:#0D6EFD; "> Administración de Reseñas </h1>  
+</div>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-sm-12">
+            <h4 class="resena2" style="text-align: center;">Modifica la reseña</h4>
+            <br>
+            <form action="" method="POST" class="needs-validation" id="r_form" novalidate>
+                {% csrf_token %}
+                {% for r in resena %}
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Correo o Usuario</label>
+                    <input type="text" class="form-control" id="r_u" name="r_u" value="{{r.1}}" placeholder="nombre@ejemplo.com o nombre de usuario" maxlength="100" required disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Comentario</label>
+                    <textarea class="form-control" id="rm_c" name="rm_c" rows="5" placeholder="Escriba su reseña" maxlength="250" required>{{r.2}}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Valoración</label><br>
+                    <span class="star-rating">
+                        <input type="radio" name="rm_v" value="1" {% if r.3 > 0 %} checked {% endif %} required><i></i>
+                        <input type="radio" name="rm_v" value="2" {% if r.3 > 1 %} checked {% endif %} required><i></i>
+                        <input type="radio" name="rm_v" value="3" {% if r.3 > 2 %} checked {% endif %} required><i></i>
+                        <input type="radio" name="rm_v" value="4" {% if r.3 > 3 %} checked {% endif %} required><i></i>
+                        <input type="radio" name="rm_v" value="5" {% if r.3 > 4 %} checked {% endif %} required><i></i>
+                    </span>                   
+                </div>
+                <div class="col-12 text-center">
+                    <button class="btn btn-success" type="submit">Enviar</button>
+                    <button class="btn btn-secondary" type="reset">Limpiar</button>
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-sm-12">
+            {% for r in resena %}
+            <div class="mb-3">
+                <i class="fa-solid fa-user"></i>
+                <h7 style="padding-left: 5px; font-weight: bold;">{{ r.1 }}</h7> 
+                <i class="fa-solid fa-star {% if r.3 > 4 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 3 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 2 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 1 %} checked {% endif %}" style="float: right;"></i>
+                <i class="fa-solid fa-star {% if r.3 > 0 %} checked {% endif %}" style="float: right;"></i>
+            </div>
+            <div class="mb-3">
+                <p style="text-align: justify;">{{ r.2}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

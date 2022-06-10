@@ -120,7 +120,9 @@ class Producto(models.Model):
 
 class Resena(models.Model):
     id_resena = models.AutoField(primary_key=True)
-    resena = models.CharField(max_length=250)
+    usuario_resena = models.CharField(max_length=100)
+    comentario = models.CharField(max_length=250)
+    valoracion = models.IntegerField(default=0)
     id_producto = models.ForeignKey(Producto, models.DO_NOTHING, db_column='id_producto')
 
     class Meta:
