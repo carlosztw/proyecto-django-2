@@ -48,8 +48,8 @@
               </li>
               
               <form class="form-inline" action="#">
-                <input class="form-control" name="b" type="search" placeholder="Buscador"></input>
-                <button class="btn btn-primary" type="submit">Buscar</button>
+                  <input class="form-control col-3" name="b" type="search" placeholder="Buscador"></input>
+                  <button class="btn btn-dark" type="submit">Buscar</button>
               </form>
             
               <li class="nav-item dropdown">
@@ -95,10 +95,25 @@
       <div class="container p-4"></div>
       <!-- Copyright -->
       <div class="text-center p-3 bg-primary">
+        Información de Contacto 
+      
+        EMAIL:
+        contacto@innovatech.cl
+        HORARIO LABORAL:
+        LUN - VIE / 9:00 AM - 6:00 PM
+      </div>
+
+      <div class="text-center p-3 bg-primary">
+        SUSCRÍBETE
+        Obtenga toda la información más reciente sobre eventos, ventas y ofertas. Suscríbase al boletín de noticias:
+      </div>
+
+      <div class="text-center p-3 bg-primary">
         © 2020 Copyright:
         <a class="text-white" href="{% url 'inicio' %}">Innova Tech</a>
       </div>
       <!-- Copyright -->
+    
     </footer>
 <!-- JavaScript -->
 {% block js %}{% endblock %}

@@ -11,7 +11,7 @@ from models import set_sql_for_field
 class Banco(models.Model):
     id_banco = models.AutoField(primary_key=True)
     nombre_banco = models.CharField(max_length=30)
-
+ 
     class Meta:
         managed = False
         db_table = 'banco'
@@ -112,7 +112,8 @@ class Producto(models.Model):
         managed = False
         db_table = 'producto'
     def __str__(self):
-        return self.nombre
+        return f'{self.nombre} -> {self.precio}'
+        
     @set_sql_for_field('id_producto', 'select seq_prod.nextval from dual')
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

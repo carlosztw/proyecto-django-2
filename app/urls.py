@@ -6,9 +6,9 @@ urlpatterns = [
     path('', inicio, name='inicio'),
     path('productos/', productos, name='productos'),
     path('carrito/', carrito, name='carrito'),
-    path('agregarcart/<int:id_producto>/', agregar_cart, name='add'),
-    path('eliminarcart/<int:id_producto>/', eliminar_cart, name='del'),
-    path('restarcart/<int:id_producto>/', restar_cart, name='sub'),
+    path('agregarcart/<id>/', agregar_cart, name='add'),
+    path('eliminarcart/<id>/', eliminar_cart, name='del'),
+    path('restarcart/<id>/', restar_cart, name='sub'),
     path('limpiarcart/', limpiar_cart, name='cls'),
 
     path('servicios/', servicios, name='servicios'),

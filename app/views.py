@@ -152,47 +152,35 @@ def buscador(request):
     return render(request,template_name,context)
 ###  ###
 
-## CARRITO con SLUG ##
- #def cart(request,slug):
-    product= Producto.objects.get(slug=slug)
-
-    initial = {"items":[],"precio":0,"count":0}
-    session=request.session.get("data",initial)
-
-    if slug in session["items"]:
-        messages.error(request,"Producto ya existe en el carrito")
-    else:
-        session["items"].append(slug)
-        session["precio"]+= float(product.precio)
-        session["count"]*=1
-        request.session["data"]=session
-        messages.succes(request,"Agregado Exitosamente")
-    return redirect("app:detail",slug)
-## FIN CARRITO ##
 
 ## CARRITO ##
-def agregar_cart (request, id):
+
+def carrito(request):
+    productos = listado_productos()
+    return render(request, 'app/carrito.html', {'Carrito': 'active'})
+
+def agregar_cart (request, id_producto):
     carrito = Carrito(request)
-    producto = Producto.objects.get(id=id)
+    producto = Producto.objects.get(id = id_producto)
     carrito.agregar(producto)
-    return redirect("inicio")
+    return redirect("app/inicio.html")
 
 def eliminar_cart(request, id_producto):
     carrito = Carrito(request)
     producto = Producto.objects.get(id=id_producto)
     carrito.eliminar(producto)
-    return redirect("inicio")
+    return redirect("app/inicio.html")
 
 def restar_cart(request, id_producto):
     carrito = Carrito(request)
     producto = Producto.objects.get(id=id_producto)
     carrito.restar(producto)
-    return redirect("inicio")
+    return redirect("app/inicio.html")
 
 def limpiar_cart(request):
     carrito = Carrito(request)
     carrito.limpiar()
-    return redirect ("inicio")
+    return redirect("app/inicio.html")
 
 ## CARRITO  ##
 
@@ -397,16 +385,6 @@ def eliminar_cliente(request, id):
 
 ### FIN CRUD CLIENTES ###
 
-### CARRITO DE COMPRAS ###
-
-def carrito(request):
-    return render(request, 'app/carrito.html', {'carrito': 'active'})
-
-
-
-
-
-### FIN CARRITO###
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
