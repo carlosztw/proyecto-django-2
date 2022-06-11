@@ -5,7 +5,7 @@ from re import template
 from ssl import SSLSession
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.core.paginator import Paginator
+from django.core.paginator import Page, Paginator
 from django.http import Http404
 import cx_Oracle
 from app.carrito import Carrito
@@ -394,6 +394,8 @@ def eliminar_cliente(request, id):
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
+
+
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   

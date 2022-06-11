@@ -13,10 +13,8 @@ class EmpleadoAdmin(admin.ModelAdmin):
 class ClienteAdmin(admin.ModelAdmin):
     list_display = ['rut_clie', 'dv_clie','primer_nombre_clie', 'segundo_nombre_clie', 'apellido_paterno_clie', 'apellido_materno_clie', 'correo_clie', 'telefono_clie' ]
     search_fields = ['rut_clie', 'dv_clie','primer_nombre_clie', 'segundo_nombre_clie', 'apellido_paterno_clie', 'apellido_materno_clie', 'correo_clie', 'telefono_clie' ]      
-class ServicioAdmin(admin.ModelAdmin):
-    list_display = ['nombre_p_ser', 'correo_ser', 'comentario_se', 'fecha_ser', 'img_ser', 'id_tipo_servicio' ]
-    search_fields = ['nombre_p_ser', 'correo_ser', 'comentario_se', 'fecha_ser', 'img_ser', 'id_tipo_servicio' ]
-    list_filter = ['id_tipo_servicio']
+
+
 
     
     
@@ -24,7 +22,7 @@ class ServicioAdmin(admin.ModelAdmin):
 admin.site.register(Empleado, EmpleadoAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Cliente, ClienteAdmin)
-admin.site.register(Servicio, ServicioAdmin)
+admin.site.register(Servicio)
 admin.site.register(Banco)
 admin.site.register(TipoProducto)
 admin.site.register(TipoServicio)
