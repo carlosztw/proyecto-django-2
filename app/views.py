@@ -390,13 +390,14 @@ def eliminar_cliente(request, id):
 
 ### FIN CRUD CLIENTES ###
 
+### CRUD SERVICIOS ###
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
-
+### FIN CRUD SERVICIOX ###
 
 ### CRUD RESEÑAS ###
 
