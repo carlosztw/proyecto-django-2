@@ -1,39 +1,47 @@
 #formulario{
-    background-color: rgba(7, 103, 163, 0.712);
     padding: 50px;
     font-family: cursive;
 }
 .form-titulo{
-    background-color: rgb(45, 68, 172);
+    background: rgb(45, 68, 172);
     padding: 20px;
     text-align: center;
     color: rgb(255, 255, 255);
-    border-bottom:solid 5px crimson;
+    border-bottom:solid 5px rgb(20, 220, 57);
     border-radius: 8px 8px 0px 0px;
 }
 
 .form-registro{
     width: 95%;
-    margin: auto;
-    max-width: 500px;
-    background-color: aliceblue;
+    margin:auto;
+    max-width: 600px;
+    background: white;
     border-radius: 8px;
 }
 .contenedor-input{
-    padding: 10px 10px;
+    padding: 15px 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
-.input{
-	margin-bottom: 7px;
-    padding: 5px;
+input{
+    padding: 15px;
+  
+ }
+ /*creacion de columnas*/
+.col-m{
+    width: 46%;
 
 }
 
+.col-l{
+    width: 60%;
+    justify-content: space-between;  
+
+}
 /**/
 .btn-registrar{
-    background: rgb(29, 104, 189);
+    background:rgb(215, 66, 66);  
     color: white;
     margin: auto;
 }

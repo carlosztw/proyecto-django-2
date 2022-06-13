@@ -224,3 +224,4 @@ class TipoServicio(models.Model):
     @set_sql_for_field('id_tipo_servicio', 'select seq_tp_ser.nextval from dual')
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+

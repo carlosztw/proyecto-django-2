@@ -1,8 +1,18 @@
+import email
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.core.paginator import Paginator
 from django.http import Http404
 import cx_Oracle
+#importar el modelo de la tabla user
+from django.contrib.auth.models import User
+#importar libreria para autentificar usuarios 
+from django.contrib.auth import authenticate,logout,login as login_aut
+#importar libreria decoradora que evita el ingreso a las paginas 
+from django.contrib.auth.decorators import login_required
+
+
+
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
@@ -11,7 +21,7 @@ def base(request):
     return render(request, 'app/base.html')
 
 def inicio(request):
-    return render(request, 'app/inicio.html', {'index': 'active'})    
+    return render(request, 'app/inicio.html')    
 
 def navbar():
     aux = 'active'
@@ -331,7 +341,65 @@ def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
 
 def registroC(request):
+    data = {}
+    if request.method == 'POST':
+        c_rut = request.POST.get('txtrut')
+        c_dv = request.POST.get('txtRuv')
+        c_pn = request.POST.get('txtNombre')
+        c_sn = request.POST.get('txtsegNombre')
+        c_pa = request.POST.get('txtapellido_pa')
+        c_sa = request.POST.get('txtapellido_ma')
+        c_c = request.POST.get('txtCorreo')
+        c_p = request.POST.get('txtcontrasena')
+        c_d = request.POST.get('txtDireccion')
+        c_te = request.POST.get('txtNumero')
+        salida = agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te); 
+        if salida == 1:
+            data['mensaje'] = 'Cliente agregado'
+        else:   
+            data['mensajeError'] = 'El cliente no fue agregado'
+        data['clientes'] = listado_clientes() 
+
+
+
+
+
+
+
+
+    if request.POST:
+        nombre = request.POST.get("txtNombre")
+        apellido_pa = request.POST.get("txtapellido_pa")
+        email = request.POST.get("txtCorreo")
+        nom_usuario = request.POST.get("txtUsuario")
+        pass1 = request.POST.get("txtcontrasena")
+
+        usu = User()
+        usu.first_name = nombre
+        usu.last_name = apellido_pa
+        usu.username = nom_usuario
+        usu.set_password(pass1)
+        usu.save
+
     return render(request, 'app/registroC.html', {'registroC': 'active'})
 
+
+def cerrar_sesion(request):
+    logout(request)
+    return render(request, 'app/inicio.html')
+
+
 def login(request):
-    return render(request, 'app/login.html', {'login': 'active'})    
+    mensaje=""
+    if request.POST:
+        nombre = request.POST.get("txtUsuario")
+        contra = request.POST.get("txtcontrasena")
+        us = authenticate(request,username=nombre,password=contra)
+        if us is not None and us.is_active:
+            login_aut(request,us)
+            return render(request, 'app/inicio.html')
+        else:
+            mensaje="no existe usuario o contra incorrecta"
+    contexto={"mensaje":mensaje}            
+    return render(request, 'app/login.html', contexto)    
+

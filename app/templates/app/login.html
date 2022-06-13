@@ -8,17 +8,21 @@
 {% block contenido %}
 
 <section id="formulario">
-    <form class="form-registro" action="" method="" onsubmit="return validaForm()">
+    <form class="form-registro" action="" method="POST" onsubmit="return validaForm()">
+        {% csrf_token %}
         <h2 class="form-titulo">Inicio de sesion</h2>
+
         <div class="contenedor-input">
-            <input class="input" type="text" name="txtrut" id="txtrut" placeholder="ingresar rut Ej. 12345678-9" required minlength="9" maxlength="10">
-            <input class="input" type="email" name="txtCorreo" id="txtCorreo" placeholder="ingrese correo" required>
-            <input class="input" type="password" name="txtcontrasena" id="txtcontrasena" placeholder="ingrese su contraseña" required minlength="8">
-            
-            <a href="{% url 'inicio' %}">
-              <input class="btn-registrar" type="submit" value="ingresar" href="{% url 'inicio' %}" >
-            </a>
-        </div>    
+            <input class="input" type="text" name="txtUsuario" id="txtUsuario" placeholder="ingrese usuario" required
+                min="3" maxlength="50">
+            <input class="input" type="password" name="txtcontrasena" id="txtcontrasena"
+                placeholder="ingrese su contraseña" required minlength="8">
+
+            <input class="btn-registrar" type="submit" value="ingresar">
+        </div>
     </form>
 </section>
+<div style="margin:auto ; text-align: center;color: rgb(0, 0, 0);font-size: xx-large;">
+    {{mensaje}}
+</div>
 {% endblock %}
