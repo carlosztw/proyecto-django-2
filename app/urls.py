@@ -14,4 +14,8 @@ urlpatterns = [
     path('adm-trabajadores/', adm_trabajadores, name='adm_trabajadores'),
     path('adm-trabajadores/modificar/<id>/', adm_modificar_trabajadores, name='modificar_trabajadores'),
     path('eliminartrabajador/<id>/', eliminar_trabajador, name="eliminar_trabajador"),
+    path('registroC/', registroC, name="registroC"),
+    path('login/', login, name="login"),
+
+
 ]

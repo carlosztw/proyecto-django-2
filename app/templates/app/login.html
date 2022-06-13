@@ -1,0 +1,24 @@
+{% extends 'app/base.html' %}
+{% block titulo %} Servicios {% endblock %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/login.css' %}">
+{% endblock %}
+{% block contenido %}
+
+<section id="formulario">
+    <form class="form-registro" action="" method="" onsubmit="return validaForm()">
+        <h2 class="form-titulo">Inicio de sesion</h2>
+        <div class="contenedor-input">
+            <input class="input" type="text" name="txtrut" id="txtrut" placeholder="ingresar rut Ej. 12345678-9" required minlength="9" maxlength="10">
+            <input class="input" type="email" name="txtCorreo" id="txtCorreo" placeholder="ingrese correo" required>
+            <input class="input" type="password" name="txtcontrasena" id="txtcontrasena" placeholder="ingrese su contraseña" required minlength="8">
+            
+            <a href="{% url 'inicio' %}">
+              <input class="btn-registrar" type="submit" value="ingresar" href="{% url 'inicio' %}" >
+            </a>
+        </div>    
+    </form>
+</section>
+{% endblock %}

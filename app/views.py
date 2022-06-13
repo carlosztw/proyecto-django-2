@@ -329,3 +329,9 @@ def servicios(request):
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
+
+def registroC(request):
+    return render(request, 'app/registroC.html', {'registroC': 'active'})
+
+def login(request):
+    return render(request, 'app/login.html', {'login': 'active'})    

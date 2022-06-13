@@ -1,0 +1,81 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block js %} <script src="{% static 'app/js/registro.js' %}"></script> {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/registro.css' %}">
+{% endblock %}
+{% block contenido %}
+
+<section id="formulario">
+    <form class="form-registro" action="" method="" onsubmit="return validaForm()">
+        <h2 class="form-titulo">Creacion de usuario</h2>
+        <div class="contenedor-input">
+            <input class="input" type="text" name="txtNombre" id="txtNombre" placeholder="ingrese nombre" required min="3" maxlength="50">
+            <input class="input" type="text" name="txtapellido" id="txtapellido" placeholder="ingrese apellidos" required min="3" maxlength="50">
+            <input class="input" type="email" name="txtCorreo" id="txtCorreo" placeholder="ingrese correo" required>
+            <input class="input" type="password" name="txtcontrasena" id="txtcontrasena" placeholder="ingrese su contraseña" required minlength="8">
+            <input class="input" type="int" name="txtNumero" id="txtNumero" placeholder="ingrese numero" required minlength="8">
+            <input class="input" type="text" name="txtDireccion" id="txtDireccion" placeholder="ingrese direccion" required>
+            <input class="input" type="text" name="txtrut" id="txtrut" placeholder="ingresar rut Ej. 12345678-9" required minlength="9" maxlength="10">
+            <input class="input" type="date" name="txtFechaNaci" id="txtFechaNaci" required min="10-10-2000" max="10-10-2030">
+            
+            <input class="btn-registrar" type="submit" value="registrar">
+        
+        </div>    
+    </form>
+</section>
+<script src="{% static 'app/js/usuario.js' %}"></script> 
+<script>
+    var arreglo = new Array();
+    var ind=0;
+
+    function grabar() {
+        var rut =document.getElementById('txtrut').value;
+        var nombre =document.getElementById('txtNombre').value;
+        var apellido =document.getElementById('txtapellido').value;
+        var correo =document.getElementById('txtCorreo').value;
+        var contrasena =document.getElementById('txtcontrasena').value;
+        var numero =document.getElementById('txtNumero').value;
+        var direccion =document.getElementById('txtDireccion').value;
+        var fecha =document.getElementById('txtFechaNaci').value;
+        usu = new usuario();
+        usu.setRut(rut);
+        usu.setNombre(nombre);
+        usu.setApellido(apellido);
+        usu.setCorreo(correo);
+        usu.setContrasena(contrasena);
+        usu.setnumero(numero);
+        usu.setdireccion(direccion);
+        usu.setFecha(fecha);
+        console.log(usu.imprimir());
+        arreglo[ind]
+        localStorage.setItem('registros', arreglo);
+        alert('Grabo usuario');
+        ind++;
+    }
+    function listar() {
+        var tabla = "<table border=1>";
+        tabla= tabla + "<tr> <td>Rut</td> <td>Nombre</td>  <td>Apellidos</td>  <td>Correo</td> <td>contrasena</td> <td>Numero</td> <td>direccion</td>  <td>fecha nacimiento</td></tr>";    
+        var datos = localStorage.getItem('registros');
+        var arreglo = new Array();
+        console.log(datos);
+        datos = datos.split('},{').join('},{');// remplazar caracteres
+        console.log(datos);
+        arreglo = datos.split(';');
+        for (let index = 0; index < arreglo.length; index++) {
+            var elemento = arreglo[index];
+            var usuario = JSON.parse(elemento);
+            tabla=tabla+ "<tr> <td>"+usuario.rut+"</td> <td>"+usuario.nombre+"</td>  <td>"+usuario.apellido+"</td>  <td>"+usuario.correo+"</td> <td>"+usuario.contrasena+"</td> <td>"+usuario.numero+"</td> <td>"+usuario.direccion+"</td>  <td>"+usuario.fecha+"</td></tr>"
+            
+        }
+        tabla=tabla+"</table>";
+        document.getElementById('listados').innerHTML+tabla;
+
+    }
+</script>
+<div id="listados">
+
+</div>
+
+
+{% endblock %}
