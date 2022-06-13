@@ -49,7 +49,34 @@
                   <li><a class="dropdown-item {{a_s}}" href="{% url 'adm_servicios' %}">Servicios</a></li>
                   <li><a class="dropdown-item {{a_r}}" href="{% url 'adm_resenas_1' %}">Reseñas</a></li>
                 </ul>
+              </li>          
+              <form class="form-inline" action="#">
+                  <input class="form-control col-3" name="b" type="search" placeholder="Buscador"></input>
+                  <button class="btn btn-dark" type="submit">Buscar</button>
+              </form>
+            
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  {% if user.is_authenticated %}
+                  Mi Cuenta
+                  {% else %}
+                  ¡Hola!
+                  {% endif %}
+                  <img src="{% static  'app/img/user-48.PNG' %}  " width="45" height="45"  alt="">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% if user.is_authenticated %}
+                  <a class="dropdown-item" href="#">Bienvenid@ : {{ '' }}</a>
+                  <a class="dropdown-item" href="#">>Cerrar Sesión</a>
+                  {% else %}
+                  <a class="dropdown-item" href="#">>Iniciar Sesión</a>
+                  <a class="dropdown-item" href="#">>Registrate</a>
+                  {% endif %} 
+                </div>
               </li>
+                <a class="btn btn-succes" href="{% url 'carrito' %}">
+                  <img src="{% static 'app/img/cart-48.PNG' %}" width="45" height="45"  alt=""> {{request.session.data.count}} Item
+                </a> 
             </ul>
           </div>
         </div>
@@ -70,10 +97,25 @@
       <div class="container p-4"></div>
       <!-- Copyright -->
       <div class="text-center p-3 bg-primary">
+        Información de Contacto 
+      
+        EMAIL:
+        contacto@innovatech.cl
+        HORARIO LABORAL:
+        LUN - VIE / 9:00 AM - 6:00 PM
+      </div>
+
+      <div class="text-center p-3 bg-primary">
+        SUSCRÍBETE
+        Obtenga toda la información más reciente sobre eventos, ventas y ofertas. Suscríbase al boletín de noticias:
+      </div>
+
+      <div class="text-center p-3 bg-primary">
         © 2020 Copyright:
         <a class="text-white" href="{% url 'inicio' %}">Innova Tech</a>
       </div>
       <!-- Copyright -->
+    
     </footer>
 <!-- JavaScript -->
 {% block js %}{% endblock %}

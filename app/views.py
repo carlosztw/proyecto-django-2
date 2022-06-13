@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.core.paginator import Paginator
+from django.core.paginator import Page, Paginator
 from django.http import Http404
 from django.core.files.storage import FileSystemStorage
 import cx_Oracle
@@ -356,9 +356,11 @@ def eliminar_cliente(request, id):
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})
 
+
+
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
-
+### FIN CRUD SERVICIOX ###
 
 ### CRUD RESEÑAS ###
 
