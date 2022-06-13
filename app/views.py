@@ -5,7 +5,6 @@ from django.core.paginator import Page, Paginator
 from django.http import Http404
 from django.core.files.storage import FileSystemStorage
 import cx_Oracle
-<<<<<<< HEAD
 #importar el modelo de la tabla user
 from django.contrib.auth.models import User
 #importar libreria para autentificar usuarios 
@@ -15,10 +14,9 @@ from django.contrib.auth.decorators import login_required
 
 
 
-=======
  
 from app.models import Producto, TipoProducto, TipoServicio
->>>>>>> 2ca1bec6abd073b35bf2987383296a56a2bf3d64
+
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
@@ -373,7 +371,6 @@ def servicios(request):
 
 def adm_servicios(request):
     return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
-<<<<<<< HEAD
 
 def registroC(request):
     data = {}
@@ -394,16 +391,6 @@ def registroC(request):
         else:   
             data['mensajeError'] = 'El cliente no fue agregado'
         data['clientes'] = listado_clientes() 
-
-
-
-
-
-
-
-
-    
-
     return render(request, 'app/registroC.html', {'registroC': 'active'})
 
 
@@ -426,7 +413,6 @@ def login(request):
     contexto={"mensaje":mensaje}            
     return render(request, 'app/login.html', contexto)    
 
-=======
 ### FIN CRUD SERVICIOX ###
 
 ### CRUD RESEÑAS ###
@@ -538,4 +524,3 @@ def adm_modificar_resena(request, id):
         data['resena'] = listar_resena(id) 
     return render(request, 'administradores/adm_resenas_modificar.html', data)
 ### FIN CRUD RESEÑAS ###
->>>>>>> 2ca1bec6abd073b35bf2987383296a56a2bf3d64
