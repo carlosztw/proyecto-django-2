@@ -1,7 +1,7 @@
 {% extends 'app/base.html' %}
-{% block titulo %} Administrar Clientes {% endblock %}
+{% block titulo %} Modificar Cliente {% endblock %}
 {% load static %}
-{% block js %}<script src="{% static 'app/js/clientes.js' %}"></script>{% endblock %}
+{% block js %}<script src="{% static 'app/js/modificar_clientes.js' %}"></script>{% endblock %}
 {% block contenido %}
 <div>   
     <br>
@@ -9,73 +9,84 @@
 </div>
 
 <!-- AGREGAR -->
-<div class="col-md-12 text-center">
-    <button type="button" class="btn btn-primary" style=" margin-top: 2%; margin-bottom: 2%;" id="esconder"> Agregar Cliente </button>
-</div>
-<div class="container" id="third" style="display: none;">  
+<div class="container">
     <div class="row justify-content-center"> 
         <div class="col-12 col-sm-10 col-md-7 col-lg-7 col-xl-5">
-            <form action="" method="POST" class="needs-validation" id="c_form" novalidate>
+            <form action="" method="POST" class="needs-validation" id="cm_form" novalidate>
                 {% csrf_token %}
+                {% for x in cliente %}
                 <div class="row g-3">
                     <div class="col-md-8">
                         <label for="staticEmail" class="col-sm-2 col-form-label">RUT:</label>
-                        <input class="form-control" type="number" placeholder="RUT del cliente" name="c_rut" id="c_rut" min="10000000" max="99999999"  required>
+                        <input class="form-control" type="number" placeholder="RUT del cliente" name="cm_rut" id="cm_rut" min="10000000" max="99999999" value="{{x.0}}" disabled required>
                     </div>
                     <div class="col-md-4">
                         <label for="staticEmail" class="col-sm-2 col-form-label">DV:</label>
-                        <input class="form-control" style="text-transform:uppercase" type="text" placeholder="DV" name="c_dv" id="c_dv" maxlength="1" required>
+                        <input class="form-control" style="text-transform:uppercase" type="text" placeholder="DV" name="cm_dv" id="cm_dv" maxlength="1" value="{{x.1}}" disabled required>
                     </div>
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="staticEmail" class="col-form-label">Primer nombre:</label>
-                        <input class="form-control" type="text" placeholder="Primer nombre del cliente" name="c_pn" id="c_pn" minlength="5" maxlength="50" required>
+                        <input class="form-control" type="text" placeholder="Primer nombre del cliente" name="cm_pn" id="cm_pn" minlength="5" maxlength="50" value="{{x.2}}" required>
                     </div>
                     <div class="col-md-6">
                         <label for="staticEmail" class="col-form-label">Segundo nombre:</label>
-                        <input class="form-control" type="text" placeholder="Segundo nombre del cliente" name="c_sn" id="c_sn" minlength="5" maxlength="50">
+                        {% if x.3 == None %}
+                        <input class="form-control" type="text" placeholder="Segundo nombre del cliente" name="cm_sn" id="cm_sn" minlength="5" maxlength="50">
+                        {% else %}
+                        <input class="form-control" type="text" placeholder="Segundo nombre del cliente" name="cm_sn" id="cm_sn" value="{{x.3}}" minlength="5" maxlength="50">
+                        {% endif %}                 
                     </div>           
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6">
                             <label for="staticEmail" class="col-form-label">Primer apellido:</label>
-                            <input class="form-control" type="text" placeholder="Primer apellido del cliente" name="c_pa" id="c_pa" minlength="5" maxlength="50" required>
+                            <input class="form-control" type="text" placeholder="Primer apellido del cliente" name="cm_pa" id="cm_pa" value="{{x.4}}" minlength="5" maxlength="50" required>
                     </div>
                     <div class="col-md-6">
                             <label for="staticEmail" class="col-form-label">Segundo apellido:</label>
-                            <input class="form-control" type="text" placeholder="Segundo apellido del cliente" name="c_sa" id="c_sa" minlength="5" maxlength="50" required>
+                            <input class="form-control" type="text" placeholder="Segundo apellido del cliente" name="cm_sa" id="cm_sa" value="{{x.5}}" minlength="5" maxlength="50" required>
                     </div>
                 </div>
                 <br>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Correo:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="email" placeholder="nombre@ejemplo.com" name="c_c" id="c_c" maxlength="150" required>
+                        <input class="form-control" type="email" value="{{x.6}}" placeholder="nombre@ejemplo.com" name="cm_c" id="cm_c" maxlength="150" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Contraseña:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="password" placeholder="Contraseña de mínimo 6 caracteres" name="c_p" id="c_p" minlength="6" maxlength="20" required>
+                        <input class="form-control" type="password" value="{{x.7}}" placeholder="Contraseña de mínimo 6 caracteres" name="cm_p" id="cm_p" minlength="6" maxlength="20" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Dirección:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" placeholder="Dirección del cliente" name="c_d" id="c_d" minlength="10" maxlength="200">
+                        {% if x.8 == None %}
+                        <input class="form-control" type="text" placeholder="Dirección del cliente" name="cm_d" id="cm_d" minlength="10" maxlength="200">
+                        {% else %}
+                        <input class="form-control" type="text" value="{{x.8}}" placeholder="Dirección del cliente" name="cm_d" id="cm_d" minlength="10" maxlength="200">
+                        {% endif %}
                     </div>
                 </div>
                 <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Teléfono:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="number" placeholder="Ej: 912345678" name="c_te" id="c_te" min="900000000" maxlength="999999999">
+                        {% if x.9 == None %}
+                        <input class="form-control" type="number" placeholder="Ej: 912345678" name="cm_te" id="cm_te" min="900000000" maxlength="999999999">
+                        {% else %}
+                        <input class="form-control" type="number" value="{{x.9}}" placeholder="Ej: 912345678" name="cm_te" id="cm_te" min="900000000" maxlength="999999999">
+                        {% endif %}                    
                     </div>
                 </div>
                 <div class="col-12 text-center">
                     <button class="btn btn-success" type="submit" >Guardar</button>
                     <button class="btn btn-secondary" type="reset">Limpiar</button>
                 </div>
+                {% endfor %}
             </form>
         </div>
     </div>
@@ -93,12 +104,11 @@
                 <th scope="col">Correo</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Teléfono</th>
-                <th scope="col">Opciones</th>
             </tr>
             </thead>
 
             <tbody>
-            {% for c in clientes %}
+            {% for c in cliente %}
             <tr>
                 <th scope="row">{{c.10}}</th>
                 <td>{{c.0}} - {{c.1}}</td>
@@ -118,10 +128,6 @@
                 {% else %}
                 <td>{{c.9}}</td>
                 {% endif %}
-                <td>
-                    <a href="{% url 'modificar_cliente' c.0 %}"" class="btn btn-warning">Modificar</a>
-                    <a onclick="confirmarEliminar({{c.0}})" class="btn btn-danger">Eliminar</a>
-                </td>
             </tr>
             {% endfor %}
             </tbody>

@@ -73,28 +73,19 @@ WSGI_APPLICATION = 'InnovaTech.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-""" # BD AWS
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'ORCL',
-        'USER': 'innova',
-        'PASSWORD': 'duoc2022',
-        'HOST': 'innovadb2.cdevfpfg3pvk.sa-east-1.rds.amazonaws.com',
-        'PORT': '1521',
-    }
-}
+
+ # BD LOCAL
 """
-""" # BD LOCAL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/xe',
+        'NAME': '127.0.0.1:1521/orcl',
         'USER': 'innova',
         'PASSWORD': 'duoc2022',
     },
 }
 """
+
 DATABASES={
     'default':
     {
@@ -139,7 +130,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

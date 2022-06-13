@@ -14,6 +14,11 @@ class ClienteAdmin(admin.ModelAdmin):
     list_display = ['rut_clie', 'dv_clie','primer_nombre_clie', 'segundo_nombre_clie', 'apellido_paterno_clie', 'apellido_materno_clie', 'correo_clie', 'telefono_clie' ]
     search_fields = ['rut_clie', 'dv_clie','primer_nombre_clie', 'segundo_nombre_clie', 'apellido_paterno_clie', 'apellido_materno_clie', 'correo_clie', 'telefono_clie' ]      
 
+
+
+    
+    
+    
 admin.site.register(Empleado, EmpleadoAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Cliente, ClienteAdmin)
