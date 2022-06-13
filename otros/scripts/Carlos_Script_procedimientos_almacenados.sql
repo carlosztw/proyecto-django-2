@@ -125,7 +125,7 @@ END LISTAR_TIPO_CUENTA;
 
 /
 
---LISTAR BANCO
+--LISTAR TIPO EMPLEADO
 CREATE OR REPLACE PROCEDURE LISTAR_TIPO_EMPLEADO(t_p out SYS_REFCURSOR)
 IS
 
@@ -273,4 +273,182 @@ BEGIN
 END MODIFICAR_TRABAJADOR;
 
 /
------- INSERTAR SERVICIO ----------
+
+------------------------CRUD DE CLIENTES------------------------
+------ INSERTAR CLIENTE ----------
+create or replace PROCEDURE insertar_cliente(   p_rut_clie NUMBER,
+                                                p_dv_clie VARCHAR2,
+                                                p_primer_nombre_clie VARCHAR2,
+                                                p_segundo_nombre_clie VARCHAR2,
+                                                p_apellido_paterno VARCHAR2,
+                                                p_apellido_materno VARCHAR2,
+                                                p_correo VARCHAR2,
+                                                p_contrasenia VARCHAR2,
+                                                p_direccion VARCHAR2,
+                                                p_telefono NUMBER,
+                                                v_salida OUT NUMBER)
+AS
+    
+BEGIN
+    INSERT INTO cliente VALUES(p_rut_clie,
+                                p_dv_clie,
+                                p_primer_nombre_clie,
+                                p_segundo_nombre_clie,
+                                p_apellido_paterno,
+                                p_apellido_materno,
+                                p_correo,
+                                p_contrasenia,
+                                p_direccion,
+                                p_telefono);
+    COMMIT; 
+    v_salida:=1;
+
+    EXCEPTION
+    WHEN OTHERS THEN
+      v_salida := 0;                       
+
+END insertar_cliente;
+/
+------ OBTENER CLIENTES ----------
+create or replace PROCEDURE OBTENER_CLIENTES(p_cursor OUT SYS_REFCURSOR)
+AS
+    v_sql VARCHAR2(1000) := 'SELECT c.*, ROW_NUMBER() OVER(ORDER BY c.rut_clie) AS numero_fila
+                             FROM cliente c
+                             ORDER BY c.rut_clie';
+BEGIN
+    open p_cursor for v_sql;
+END;
+/
+------ OBTENER CLIENTE ------------
+create or replace PROCEDURE obtener_cliente(p_rut_clie IN NUMBER,
+                                             p_cursor OUT SYS_REFCURSOR)
+AS
+    v_sql VARCHAR2(1000) := 'SELECT c.*, ROW_NUMBER() OVER(ORDER BY c.rut_clie) AS numero_fila 
+                            FROM cliente c WHERE c.rut_clie = ' || p_rut_clie;
+BEGIN
+    OPEN p_cursor FOR v_sql;
+END obtener_cliente;
+/
+------ ACTUALIZAR CLIENTE ----------
+create or replace PROCEDURE actualizar_cliente (p_rut_clie NUMBER,
+                                                p_primer_nombre_clie VARCHAR2,
+                                                p_segundo_nombre_clie VARCHAR2,
+                                                p_apellido_paterno_clie VARCHAR2,
+                                                p_apellido_materno_clie VARCHAR2,
+                                                p_correo_clie VARCHAR2,
+                                                p_contrasenia_clie VARCHAR2,
+                                                p_direccion_clie VARCHAR2,
+                                                p_telefono_clie NUMBER,
+                                                v_salida out number)
+AS
+
+BEGIN
+    UPDATE cliente
+    SET primer_nombre_clie = p_primer_nombre_clie,
+        segundo_nombre_clie = p_segundo_nombre_clie,
+        apellido_paterno_clie = p_apellido_paterno_clie,
+        apellido_materno_clie = p_apellido_materno_clie,
+        correo_clie = p_correo_clie,
+        contrasena_clie = p_contrasenia_clie,
+        direccion_clie = p_direccion_clie,
+        telefono_clie = p_telefono_clie
+
+    WHERE rut_clie = p_rut_clie;
+    COMMIT; 
+    v_salida:=1;
+
+    EXCEPTION
+    WHEN OTHERS THEN
+      v_salida := 0;
+END actualizar_cliente;
+/
+------ ELIMINAR CLIENTE ----------
+create or replace PROCEDURE eliminar_cliente(p_rut_clie IN NUMBER)
+AS
+    
+BEGIN
+    DELETE FROM cliente
+    WHERE rut_clie = p_rut_clie;
+
+END eliminar_cliente;
+/
+
+------------------------CRUD DE RESEÑAS------------------------
+------ INSERTAR RESEÑA ----------
+create or replace PROCEDURE INSERTAR_RESENA(v_usuario VARCHAR2,
+                                            v_comentario VARCHAR2,
+                                            v_valoracion NUMBER,
+                                            v_id_producto NUMBER,
+                                            v_salida OUT NUMBER)
+IS
+    
+BEGIN
+    INSERT INTO resena VALUES(seq_resn.nextval,
+                        v_usuario,
+                        v_comentario,
+                        v_valoracion,
+                        v_id_producto);
+    COMMIT;   
+    v_salida := 1;
+    EXCEPTION
+    WHEN OTHERS THEN
+      v_salida := 0;
+END INSERTAR_RESENA;
+/
+------ OBTENER RESEÑAS ----------
+create or replace PROCEDURE obtener_resenas(p_id_producto IN NUMBER,
+                                             p_cursor OUT SYS_REFCURSOR)
+AS
+
+BEGIN
+    OPEN p_cursor FOR SELECT *
+                      FROM resena
+                      WHERE id_producto = p_id_producto
+                      ORDER BY id_resena;
+END obtener_resenas;
+/
+------ OBTENER RESEÑA ----------
+create or replace PROCEDURE obtener_resena(v_id_resena IN NUMBER,
+                                           p_cursor OUT SYS_REFCURSOR)
+AS
+
+BEGIN
+    OPEN p_cursor FOR SELECT *
+                      FROM resena
+                      WHERE id_resena = v_id_resena;
+END obtener_resena;
+/
+------ MODIFICAR RESEÑA ----------
+create or replace PROCEDURE actualizar_resena(  v_id_resena NUMBER,
+                                                v_comentario VARCHAR2,
+                                                v_valoracion NUMBER,
+                                                v_salida OUT NUMBER)
+AS
+
+BEGIN
+    UPDATE resena
+    SET comentario = v_comentario,
+        valoracion = v_valoracion
+    WHERE id_resena = v_id_resena;
+    v_salida := 1;
+    EXCEPTION
+    WHEN OTHERS THEN
+      v_salida := 0;
+END actualizar_resena;
+/
+------ ELIMINAR RESEÑA ----------
+create or replace PROCEDURE ELIMINAR_RESENA(v_id_resena IN NUMBER, 
+                                            v_salida OUT NUMBER)
+AS
+    
+BEGIN
+    DELETE FROM resena
+    WHERE id_resena = v_id_resena;
+    COMMIT;
+    v_salida := 1;
+    EXCEPTION
+    WHEN OTHERS THEN
+      v_salida := 0;
+
+END ELIMINAR_RESENA;
+/

@@ -37,7 +37,7 @@ CREATE SEQUENCE seq_tp_emp START WITH 10 INCREMENT BY 10;
 INSERT INTO tipo_empleado VALUES (SEQ_TP_EMP.nextval, 'Vendedor' ) ;
 INSERT INTO tipo_empleado VALUES (SEQ_TP_EMP.nextval, 'Despachador' ) ;
 INSERT INTO tipo_empleado VALUES (SEQ_TP_EMP.nextval, 'Administrador' ) ;
-INSERT INTO tipo_empleado VALUES (SEQ_TP_EMP.nextval, 'RRHH' ) ;
+INSERT INTO tipo_empleado VALUES (SEQ_TP_EMP.nextval, 'Técnico' ) ;
 
 ---------------------------------------------------------------
 DROP SEQUENCE seq_pago;

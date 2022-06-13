@@ -37,13 +37,16 @@
         </div>
     </div>
 </div>
-
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-sm-12">
             <h4 class="resena">Reseñas</h4>
+            {% if not resena %}
+            <div class="container1">
+                <h5>No hay reseñas para este producto</h5>
+            </div>
+            {% else %}
             {% for r in resena %}
-            
             <div class="mb-3">
                 <i class="fa-solid fa-user"></i>
                 <h7 style="padding-left: 5px; font-weight: bold;">{{ r.1 }}</h7> 
@@ -58,6 +61,7 @@
             </div>
             
             {% endfor %}
+            {% endif %}
         </div>
         <div class="col-md-4 col-sm-12">
             <h4 class="resena">Escribe tu reseña</h4>

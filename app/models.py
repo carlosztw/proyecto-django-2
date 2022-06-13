@@ -5,6 +5,7 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from distutils.command.upload import upload
 from django.db import models
 from models import set_sql_for_field
 
@@ -106,7 +107,7 @@ class Producto(models.Model):
     precio = models.BigIntegerField()
     stock = models.BigIntegerField()
     id_tipo_producto = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='id_tipo_producto')
-    nombre = models.CharField(max_length=300, null=True)
+    imagen = models.ImageField(upload_to="", null=True, blank=True)
 
     class Meta:
         managed = False

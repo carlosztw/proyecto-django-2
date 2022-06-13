@@ -1,14 +1,9 @@
-from ast import Return
-from multiprocessing import context
-from pyexpat.errors import messages
-from re import template
-from ssl import SSLSession
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.core.paginator import Paginator
 from django.http import Http404
+from django.core.files.storage import FileSystemStorage
 import cx_Oracle
-from app.carrito import Carrito
  
 from app.models import Producto, TipoProducto, TipoServicio
 # Create your views here.
@@ -74,18 +69,29 @@ def adm_modificar_producto(request, id):
         'a_p': navbar(),
         'categorias': listado_tipo_productos(),
     }
-    if request.method == 'POST':
+    if request.method == 'POST' and bool(request.FILES.get('pm_imagen', False)) == True:
         pm_nombre = request.POST.get('pm_nombre')
         pm_precio = request.POST.get('pm_precio')
         pm_stock = request.POST.get('pm_stock')
         pm_tp = request.POST.get('pm_tp')
-        pm_imagen = request.POST.get('pm_imagen')
-        salida = modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen)
-        if salida == 1:
-            data['mensaje'] = "Producto modificado"
-        else:
-            data['mensaje'] = 'El producto no fue modificado' 
+        pm_imagen = request.FILES['pm_imagen']
+        fs = FileSystemStorage()
+        filename = fs.save(pm_imagen.name, pm_imagen)
+        uploaded_file_url = fs.url(filename)
+        salida = modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, uploaded_file_url);
+    else:
+        pm_nombre = request.POST.get('pm_nombre')
+        pm_precio = request.POST.get('pm_precio')
+        pm_stock = request.POST.get('pm_stock')
+        pm_tp = request.POST.get('pm_tp')
+        pm_imagen = None
+        salida = modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen);
+
+    if salida == 1:
+        data['mensaje'] = "Producto modificado"
         return redirect(to="adm_productos")
+    elif salida == 0:
+        data['mensaje'] = 'El producto no fue modificado' 
     return render(request, 'administradores/adm_productos_modificar.html', data)
 
 def eliminar_producto(request, id):
@@ -115,18 +121,28 @@ def adm_productos(request):
         'a_p': navbar(),
         'categorias': listado_tipo_productos(),
     }
-    if request.method == 'POST':
+    if request.method == 'POST' and bool(request.FILES.get('p_imagen', False)) == True:
         p_nombre = request.POST.get('p_nombre')
         p_precio = request.POST.get('p_precio')
         p_stock = request.POST.get('p_stock')
         p_tp = request.POST.get('p_tp')
-        p_imagen = request.POST.get('p_imagen')
+        p_imagen = request.FILES['p_imagen']
+        fs = FileSystemStorage()
+        filename = fs.save(p_imagen.name, p_imagen)
+        uploaded_file_url = fs.url(filename)
+        salida = agregar_producto(p_nombre, p_precio, p_stock, p_tp, uploaded_file_url);
+    else:
+        p_nombre = request.POST.get('p_nombre')
+        p_precio = request.POST.get('p_precio')
+        p_stock = request.POST.get('p_stock')
+        p_tp = request.POST.get('p_tp')
+        p_imagen = None
         salida = agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen);
-        if salida == 1:
-            data['mensaje'] = "Producto agregado"
-        else:
-            data['mensaje'] = 'El producto no fue agregado' 
-        data['productos'] = listado_productos() 
+    if salida == 1:
+        data['mensaje'] = "Producto agregado"
+    else:
+        data['mensaje'] = 'El producto no fue agregado' 
+    data['productos'] = listado_productos() 
     return render(request, 'administradores/adm_productos.html', data) 
   
 def listado_tipo_productos():
@@ -137,71 +153,6 @@ def listado_tipo_productos():
         lista.append(i)
     return lista
 ### FIN CRUD PRODUCTOS ###
-
-###  ###
-def buscar_catg (request,slug):
-    template_name="base.html"
-    catg=TipoProducto.objects.get(slug=slug)
-    categorias=TipoProducto.objects.filter(activo=True)
-    productos=Producto.objects.filter(activo=True,TipoProducto=catg)
-    context = {"productos":productos, "categorias":categorias}
-
-    return render(request,template_name,context)
-
-def buscador(request):
-    template_name="base.html"
-    b=request.GET["b"]
-    productos=Producto.objects.filter(activo=True,nombre_icontains=b)
-    categorias=TipoProducto.objects.filter(activo=True,nombre_icontains=b)
-    servicios=TipoServicio.objects.filter(activo=True,nombre_icontains=b)
-    context = {"productos":productos,"categorias":categorias,"servicios":servicios}
-
-    return render(request,template_name,context)
-###  ###
-
-## CARRITO con SLUG ##
- #def cart(request,slug):
-    product= Producto.objects.get(slug=slug)
-
-    initial = {"items":[],"precio":0,"count":0}
-    session=request.session.get("data",initial)
-
-    if slug in session["items"]:
-        messages.error(request,"Producto ya existe en el carrito")
-    else:
-        session["items"].append(slug)
-        session["precio"]+= float(product.precio)
-        session["count"]*=1
-        request.session["data"]=session
-        messages.succes(request,"Agregado Exitosamente")
-    return redirect("app:detail",slug)
-## FIN CARRITO ##
-
-## CARRITO ##
-def agregar_cart (request, id):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id)
-    carrito.agregar(producto)
-    return redirect("inicio")
-
-def eliminar_cart(request, id_producto):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id_producto)
-    carrito.eliminar(producto)
-    return redirect("inicio")
-
-def restar_cart(request, id_producto):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id_producto)
-    carrito.restar(producto)
-    return redirect("inicio")
-
-def limpiar_cart(request):
-    carrito = Carrito(request)
-    carrito.limpiar()
-    return redirect ("inicio")
-
-## CARRITO  ##
 
 ### CRUD TRABJADORES ###
 def listado_trabajadores():
@@ -401,17 +352,6 @@ def eliminar_cliente(request, id):
 
 
 ### FIN CRUD CLIENTES ###
-
-### CARRITO DE COMPRAS ###
-
-def carrito(request):
-    return render(request, 'app/carrito.html', {'carrito': 'active'})
-
-
-
-
-
-### FIN CARRITO###
 
 def servicios(request):
     return render(request, 'app/servicios.html', {'servicios': 'active'})

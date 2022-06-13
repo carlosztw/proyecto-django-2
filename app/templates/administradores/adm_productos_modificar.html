@@ -30,9 +30,9 @@
                     <label for="staticEmail" class="col-sm-2 col-form-label">Imagen:</label>
                     <div class="col-sm-10">
                         {% if p.5 == None %}
-                        <input class="form-control" type="url" aria-label="default input example" placeholder="URL de la imagen" name="pm_imagen" id="pm_imagen">
+                        <input class="form-control" type="file" aria-label="default input example" placeholder="URL de la imagen" name="pm_imagen" id="pm_imagen">
                         {% else %}
-                        <input class="form-control" type="url" aria-label="default input example" placeholder="URL de la imagen" name="pm_imagen" id="pm_imagen" value="{{p.5}}">
+                        <input class="form-control" type="file" aria-label="default input example" placeholder="URL de la imagen" name="pm_imagen" id="pm_imagen" value="{{p.5}}">
                         {% endif %}
                     </div>
                 </div>
@@ -57,7 +57,7 @@
         </div>
     </div>
 </div>    
-
+<h4>{{mensaje}}</h4>
 <!-- LISTAR -->
 <div class="container-fluid cardprod">
     <div class="row">
