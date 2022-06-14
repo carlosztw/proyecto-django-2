@@ -14,7 +14,7 @@
 </div>
 <div class="container" id="third" style="display: none;">  
     <div class="row justify-content-center"> 
-        <div class="col-12 col-sm-10 col-md-7 col-lg-7 col-xl-5">
+        <div class="col-10 col-sm-10 col-md-7 col-lg-7 col-xl-5">
             <form action="" method="POST" class="needs-validation" id="c_form" novalidate>
                 {% csrf_token %}
                 <div class="row g-3">
@@ -119,8 +119,8 @@
                 <td>{{c.9}}</td>
                 {% endif %}
                 <td>
-                    <a href="{% url 'modificar_cliente' c.0 %}"" class="btn btn-warning">Modificar</a>
-                    <a onclick="confirmarEliminar({{c.0}})" class="btn btn-danger">Eliminar</a>
+                    <a href="{% url 'modificar_cliente' c.0 %}"" class="btn btn-warning" style="margin-bottom: 10px;">Modificar</a>
+                    <a onclick="confirmarEliminar({{c.0}})" class="btn btn-danger" style="margin-bottom: 10px;">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}

@@ -39,3 +39,5 @@ def set_sql_for_field(field, sql):
             return model_save_func(obj, *args, **kwargs)
         return wrapper
     return decorator
+
+ 

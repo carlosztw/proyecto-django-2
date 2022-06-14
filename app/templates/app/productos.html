@@ -16,7 +16,7 @@
             {% for p in productos %}
             <div class="content">
                 {% if p.5 %}
-                <a href="{% url 'resenas' p.0 %}"> <img src="{{p.5}}" onerror="this.src='https://live.staticflickr.com/65535/52085597584_018d97d235_m.jpg'"></a>
+                <a href="{% url 'resenas' p.0 %}"><img src="{{p.5}}" onerror="this.src='https:/live.staticflickr.com/65535/52085597584_018d97d235_m.jpg'"></a>
                 {% else %}
                 <a href="{% url 'resenas' p.0 %}"><img src="{% static 'app/img/noimagen.jpg' %}"></a>
                 {% endif %}

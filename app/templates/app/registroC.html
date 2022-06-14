@@ -1,0 +1,53 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block js %}
+<script src="{% static 'app/js/registro.js' %}"></script> {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/registro.css' %}">
+{% endblock %}
+{% block contenido %}
+
+<body >
+    <section id="formulario">
+        <form class="form-registro" action="" method="POST" onsubmit="return validaForm()">
+            {% csrf_token %}
+            <h2 class="form-titulo">Creacion de usuario</h2>
+            <div class="contenedor-input">
+                <br>
+                <input class="col-sm" type="text" name="txtrut" id="txtrut" placeholder="Ingresar su rut Ej. 12345678"
+                    required minlength="7" maxlength="8">
+                <input class="col-sm" type="text" name="txtRuv" id="txtRuv" placeholder="Ingrese su numero verificador"
+                    required minlength="1" maxlength="1">
+                <input class="col-sm" type="text" name="txtNombre" id="txtNombre" placeholder="Ingrese nombre" required
+                    min="3" maxlength="50">
+                <input class="col-sm" type="text" name="txtsegNombre" id="txtsegNombre"
+                    placeholder="Ingrese segundo nombre" required min="3" maxlength="50">
+                <input class="col-sm" type="text" name="txtapellido_pa" id="txtapellido_pa"
+                    placeholder="Ingrese apellido paterno" required min="3" maxlength="50">
+                <input class="col-sm" type="text" name="txtapellido_ma" id="txtapellido_ma"
+                    placeholder="Ingrese apellido materno" required min="3" maxlength="50">
+                <input class="col-xl" type="email" name="txtCorreo" id="txtCorreo" placeholder="Ingrese correo"
+                    required>
+                <input class="col-sm" type="text" name="txtUsuario" id="txtUsuario" placeholder="Ingrese usuario"
+                    required min="3" maxlength="50">
+                <input class="col-sm" type="password" name="txtcontrasena" id="txtcontrasena"
+                    placeholder="Ingrese su contraseña" required minlength="8">
+                <input class="col-xl" type="int" name="txtNumero" id="txtNumero" placeholder="Ingrese numero" required
+                    minlength="8">
+                <input class="input" type="text" name="txtDireccion" id="txtDireccion" placeholder="Ingrese dirección"
+                    required>
+
+                <input class="input" type="date" name="txtFechaNaci" id="txtFechaNaci" required min="10-10-2000"
+                    max="10-10-2030">
+
+                <input class="btn-registrar" type="submit" value="Registrar">
+                <br>
+
+            </div>
+        </form>
+    </section>
+    <div style="text-align: center; color:red; font-size: xx-large;">
+        <h4 style="color: red;">{{mensaje}}</h4>
+    </div>
+</body>
+{% endblock contenido %}

@@ -137,9 +137,11 @@ class Resena(models.Model):
 
 class Servicio(models.Model):
     id_servicio = models.AutoField(primary_key=True)
-    fecha_ser = models.DateField()
-    adjunto_ser = models.BinaryField(blank=True, null=True)
-    comentario = models.CharField(max_length=500)
+    nombre_p_ser = models.CharField(max_length=60)
+    correo_ser = models.CharField(max_length=500)
+    comentario_se = models.CharField(max_length=1000)
+    fecha_ser = models.CharField(max_length=50)
+    img_ser = models.CharField(max_length=500)
     id_tipo_servicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tipo_servicio')
 
     class Meta:
@@ -228,3 +230,4 @@ class TipoServicio(models.Model):
     @set_sql_for_field('id_tipo_servicio', 'select seq_tp_ser.nextval from dual')
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+

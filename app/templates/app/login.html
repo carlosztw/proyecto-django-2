@@ -1,0 +1,29 @@
+{% extends 'app/base.html' %}
+{% block titulo %} Servicios {% endblock %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/login.css' %}">
+{% endblock %}
+{% block contenido %}
+<div class="container-fluid">
+<section id="formulario">
+    <form class="form-registro" action="" method="POST" onsubmit="return validaForm()">
+        {% csrf_token %}
+        <h2 class="form-titulo">Inicio de sesión</h2>
+
+        <div class="contenedor-input">
+            <input class="input" type="text" name="txtUsuario" id="txtUsuario" placeholder="Ingrese usuario" required
+                min="3" maxlength="50">
+            <input class="input" type="password" name="txtcontrasena" id="txtcontrasena"
+                placeholder="Ingrese su contraseña" required minlength="8">
+
+            <input class="btn-registrar" type="submit" value="Ingresar">
+        </div>
+    </form>
+</section>
+</div>
+<div style="margin:auto ; text-align: center;color: rgb(0, 0, 0);font-size: xx-large;">
+    {{mensaje}}
+</div>
+{% endblock %}

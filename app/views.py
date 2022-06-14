@@ -4,8 +4,12 @@ from django.core.paginator import Page, Paginator
 from django.http import Http404
 from django.core.files.storage import FileSystemStorage
 import cx_Oracle
- 
-from app.models import Producto, TipoProducto, TipoServicio
+#importar el modelo de la tabla user
+from django.contrib.auth.models import User
+#importar libreria para autentificar usuarios 
+from django.contrib.auth import authenticate,logout,login as login_aut
+#importar libreria decoradora que evita el ingreso a las paginas 
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
@@ -14,7 +18,10 @@ def base(request):
     return render(request, 'app/base.html')
 
 def inicio(request):
-    return render(request, 'app/inicio.html', {'index': 'active'})    
+    data={
+        'index': navbar()
+    }
+    return render(request, 'app/inicio.html', data)    
 
 def navbar():
     aux = 'active'
@@ -353,15 +360,6 @@ def eliminar_cliente(request, id):
 
 ### FIN CRUD CLIENTES ###
 
-def servicios(request):
-    return render(request, 'app/servicios.html', {'servicios': 'active'})
-
-
-
-def adm_servicios(request):
-    return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
-### FIN CRUD SERVICIOX ###
-
 ### CRUD RESEÑAS ###
 
 def agregar_resena(r_u, r_c, r_v, id):
@@ -471,3 +469,4 @@ def adm_modificar_resena(request, id):
         data['resena'] = listar_resena(id) 
     return render(request, 'administradores/adm_resenas_modificar.html', data)
 ### FIN CRUD RESEÑAS ###
+

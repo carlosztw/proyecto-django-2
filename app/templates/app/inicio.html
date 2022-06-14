@@ -1,6 +1,50 @@
 {% extends 'app/base.html' %}
 {% block titulo %} Innova Tech {% endblock %}
 {% load static %}
-{% block contenido %}
-<h1> Inicio </h1>
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/inici.css' %}">
 {% endblock %}
+{% block contenido %}
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{% static 'app/img/fondo5.jpg' %}" class="d-block w-100" alt="" width="400" height="400">
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'app/img/fondo2.jpg' %}" class="d-block w-100" alt="" width="100" height="400">
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'app/img/portada1.png' %}" class="d-block w-100" alt="" width="100" height="400">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="p-5 mb-4 bg-light rounded-3" >
+        <div class="container-fluid py-5" style="background:rgb(5, 47, 174); color:rgb(255, 255, 255) ;border-radius: 8px 8px 8px 8px; padding-right:15px"  >
+          <h1 class="display-5 fw-bold">INNOVA TECH</h1>
+          <p class="col-md-8 fs-4">Somos una compañía dedicada a la venta de productos electrónicos, donde entregamos los productos de la mejor calidad y los servicios que necesite para estos.
+                                   Únete a nuestra comunidad creando un usuario completamente gratis y así obtener más información.  </p>
+        <a href="{% url 'registroC' %}">                   
+          <button class="btn btn-primary btn-lg" type="button" style="background:rgb(215, 66, 66) ;">Registrar usuario</button>
+        </a>
+        </div>
+      </div>
+{% endblock %}
+"{% static 'app/img/fondo2.jpg' %}"

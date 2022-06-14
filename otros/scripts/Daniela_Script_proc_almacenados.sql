@@ -14,18 +14,18 @@ END LISTAR_TIPO_servicio;
 CREATE OR REPLACE PROCEDURE INSERTAR_SERVICIO(s_nombre VARCHAR2,
                                               s_correo VARCHAR2,
                                               s_comentario VARCHAR2,
-                                              s_fecha DATE,
                                               s_imagen VARCHAR2,
                                               s_id_tp_ser NUMBER,
                                               v_salida OUT NUMBER)
 IS
-    
+
 BEGIN
     INSERT INTO servicio (id_servicio,nombre_p_ser,correo_ser,comentario_se,fecha_ser,img_ser,id_tipo_servicio) VALUES(seq_servicio.nextval,
                                 s_nombre,
                                 s_correo,
                                 s_comentario,
-                                s_fecha,
+                                SELECT TO_CHAR(SYSDATE - 4/24, 'MM-DD-YYYY HH24:MI:SS')
+                                FROM DUAL,
                                 s_imagen,
                                 s_id_tp_ser);
     COMMIT;   
