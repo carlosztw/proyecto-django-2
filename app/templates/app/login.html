@@ -11,7 +11,6 @@
     <form class="form-registro" action="" method="POST" onsubmit="return validaForm()">
         {% csrf_token %}
         <h2 class="form-titulo">Inicio de sesión</h2>
-
         <div class="contenedor-input">
             <input class="input" type="text" name="txtUsuario" id="txtUsuario" placeholder="Ingrese usuario" required
                 min="3" maxlength="50">

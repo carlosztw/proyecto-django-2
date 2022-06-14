@@ -11,15 +11,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout,login as login_aut
 #importar libreria decoradora que evita el ingreso a las paginas 
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
-=======
-
-
-
- 
-from app.models import Producto, TipoProducto, TipoServicio
-
->>>>>>> 38bac74b646d1c12781e4d677d1606731434100d
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
@@ -28,14 +19,10 @@ def base(request):
     return render(request, 'app/base.html')
 
 def inicio(request):
-<<<<<<< HEAD
     data={
         'index': navbar()
     }
     return render(request, 'app/inicio.html', data)    
-=======
-    return render(request, 'app/inicio.html')    
->>>>>>> 38bac74b646d1c12781e4d677d1606731434100d
 
 def navbar():
     aux = 'active'
@@ -374,60 +361,6 @@ def eliminar_cliente(request, id):
 
 ### FIN CRUD CLIENTES ###
 
-<<<<<<< HEAD
-=======
-def servicios(request):
-    return render(request, 'app/servicios.html', {'servicios': 'active'})
-
-
-
-def adm_servicios(request):
-    return render(request, 'administradores/adm_servicios.html', {'a_s': 'active'})   
-
-def registroC(request):
-    data = {}
-    if request.method == 'POST':
-        c_rut = request.POST.get('txtrut')
-        c_dv = request.POST.get('txtRuv')
-        c_pn = request.POST.get('txtNombre')
-        c_sn = request.POST.get('txtsegNombre')
-        c_pa = request.POST.get('txtapellido_pa')
-        c_sa = request.POST.get('txtapellido_ma')
-        c_c = request.POST.get('txtCorreo')
-        c_p = request.POST.get('txtcontrasena')
-        c_d = request.POST.get('txtDireccion')
-        c_te = request.POST.get('txtNumero')
-        salida = agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te); 
-        if salida == 1:
-            data['mensaje'] = 'Cliente agregado'
-        else:   
-            data['mensajeError'] = 'El cliente no fue agregado'
-        data['clientes'] = listado_clientes() 
-    return render(request, 'app/registroC.html', {'registroC': 'active'})
-
-
-def cerrar_sesion(request):
-    logout(request)
-    return render(request, 'app/inicio.html')
-
-
-def login(request):
-    mensaje=""
-    if request.POST:
-        nombre = request.POST.get("txtUsuario")
-        contra = request.POST.get("txtcontrasena")
-        us = authenticate(request,username=nombre,password=contra)
-        if us is not None and us.is_active:
-            login_aut(request,us)
-            return render(request, 'app/inicio.html')
-        else:
-            mensaje="no existe usuario o contra incorrecta"
-    contexto={"mensaje":mensaje}            
-    return render(request, 'app/login.html', contexto)    
-
-### FIN CRUD SERVICIOX ###
-
->>>>>>> 38bac74b646d1c12781e4d677d1606731434100d
 ### CRUD RESEÑAS ###
 
 def agregar_resena(r_u, r_c, r_v, id):
@@ -537,7 +470,3 @@ def adm_modificar_resena(request, id):
         data['resena'] = listar_resena(id) 
     return render(request, 'administradores/adm_resenas_modificar.html', data)
 ### FIN CRUD RESEÑAS ###
-<<<<<<< HEAD
-
-=======
->>>>>>> 38bac74b646d1c12781e4d677d1606731434100d
