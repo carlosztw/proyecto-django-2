@@ -4,6 +4,7 @@ from django.core.paginator import Page, Paginator
 from django.http import Http404
 from django.core.files.storage import FileSystemStorage
 from .views import *
+from carro import views
 import cx_Oracle
 #importar el modelo de la tabla user
 from django.contrib.auth.models import User
@@ -14,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
+
 
 ### CRUD SERVICIOS ###
 def listado_tipo_servicios():
@@ -77,6 +79,7 @@ def eliminar_servicio(request, id):
 ### LOGIN ###
 def cerrar_sesion(request):
     logout(request)
+    views.limpiar_carro(request)
     return render(request, 'app/inicio.html')
 
 

@@ -141,7 +141,7 @@ class Servicio(models.Model):
     correo_ser = models.CharField(max_length=500)
     comentario_se = models.CharField(max_length=1000)
     fecha_ser = models.CharField(max_length=50)
-    img_ser = models.CharField(max_length=500)
+    img_ser = models.CharField(max_length=500, null=True)
     id_tipo_servicio = models.ForeignKey('TipoServicio', models.DO_NOTHING, db_column='id_tipo_servicio')
 
     class Meta:

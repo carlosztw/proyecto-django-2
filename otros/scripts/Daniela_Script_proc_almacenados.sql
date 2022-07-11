@@ -24,8 +24,8 @@ BEGIN
                                 s_nombre,
                                 s_correo,
                                 s_comentario,
-                                SELECT TO_CHAR(SYSDATE - 4/24, 'MM-DD-YYYY HH24:MI:SS')
-                                FROM DUAL,
+                                (SELECT TO_CHAR(SYSDATE - 4/24, 'MM-DD-YYYY HH24:MI:SS')
+                                FROM DUAL),
                                 s_imagen,
                                 s_id_tp_ser);
     COMMIT;   
@@ -40,7 +40,7 @@ END INSERTAR_SERVICIO;
 ---------RESCATAR LOS SERVICIOS----------
 CREATE OR REPLACE PROCEDURE obtener_servicios(s_cursor OUT SYS_REFCURSOR)
 AS
-    v_sql VARCHAR2(1000) := 'SELECT s.*, tps.descripcion_ser
+    v_sql VARCHAR2(1000) := 'SELECT s.*, tps.descripcion_ser, ROW_NUMBER() OVER(ORDER BY id_servicio) AS numero_fila
                             FROM servicio s
                             INNER JOIN tipo_servicio tps
                               ON tps.id_tipo_servicio = s.id_tipo_servicio
@@ -52,13 +52,18 @@ END obtener_servicios;
 /
 
 --------ELIMINAR SERVICIO----------
-CREATE OR REPLACE PROCEDURE ELIMINAR_SERVICIO(s_id_servicio IN NUMBER)
+CREATE OR REPLACE PROCEDURE ELIMINAR_SERVICIO(s_id_servicio IN NUMBER,
+                                             v_salida OUT NUMBER)
 AS
     
 BEGIN
     DELETE FROM servicio
     WHERE id_servicio = s_id_servicio;
     COMMIT;
+    v_salida := 1;
+    EXCEPTION
+    WHEN OTHERS THEN
+      v_salida := 0;
 END ELIMINAR_SERVICIO;
 
 /

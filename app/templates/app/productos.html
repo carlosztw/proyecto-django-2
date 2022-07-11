@@ -9,10 +9,16 @@
     <br>
     <h1 style="text-align: center; color:#0D6EFD; "> Productos </h1>  
 </div>
+<div class="container">
+    <div style="float: right;">
+        {% include "carro/widget.html" %}
+    </div>
+</div>
 <div class="container-fluid cardprod">
+
     <div class="row">
         <!-- CARD DE PRODUCTOS -->
-        <div class="gallery">
+        <div class="col-9 gallery">
             {% for p in productos %}
             <div class="content">
                 {% if p.5 %}
@@ -28,7 +34,7 @@
                 {% elif p.4 == 1 %}
                 <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
                 {% else %}
-                <button class="buy-1">Agregar al carro</button> 
+                <a href="{% url 'carro:agregar' p.0 %}"><button class="buy-1">Agregar al carro</button></a>
                 {% endif %}
             </div>
             {% endfor %}
