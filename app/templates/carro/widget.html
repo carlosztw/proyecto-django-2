@@ -38,11 +38,11 @@
     <tfoot>
         <tr>
             <td colspan="3">
-                <b>Total: $ {{ importe_total_carro }}</b><br>
+                <b>Total: $ {{ importe_total_carro }}</b><a href="{% url 'carro:limpiar' %}" class="btn btn-sm btn-danger" style=" color: white; float: right;">Limpiar carro</a><br><br> 
                 {% if request.session.carro.items %}
                     {% if user.is_authenticated %}
                     <div class="col text-center">
-                        <button type="button" class="btn btn-primary" style="margin-top: 5px;"> Finalizar Compra </button>
+                        <a href=""><button type="button" class="btn btn-primary" style="margin-top: 5px;"> Finalizar Compra </button></a>
                     </div>
                     {% else %}
                     <div class="alert alert-danger text-center" style="margin-top: 5px;">
