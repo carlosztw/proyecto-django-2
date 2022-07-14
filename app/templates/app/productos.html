@@ -4,6 +4,9 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'app/css/productos.css' %}">
 {% endblock %}
+{% block js %}
+<script src="{% static 'app/js/listado-productos.js' %}"></script>
+{% endblock %}
 {% block contenido %}
 <div>  
     <br>
@@ -30,11 +33,11 @@
                 <h3>{{p.1}}</h3>
                 <h4>${{p.2}}</h4>
                 {% if p.4 == 0 %}
-                <button style="background-color: black;" class="buy-1" disabled>AGOTADO</button> 
+                <a href="{% url 'carro:agregar' p.0 %}"><button style="background-color: black;" class="buy-1" disabled>AGOTADO</button></a> 
                 {% elif p.4 == 1 %}
-                <button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button>
+                <a href="{% url 'carro:agregar' p.0 %}"><button style="background-color: rgb(179, 16, 16);" class="buy-1">ÚLTIMA UNIDAD</button></a>
                 {% else %}
-                <a href="{% url 'carro:agregar' p.0 %}"><button class="buy-1">Agregar al carro</button></a>
+                <a href="{% url 'carro:agregar' p.0 %}"><button class="buy-1" onclick="sweetalert()">Agregar al carro</button></a>
                 {% endif %}
             </div>
             {% endfor %}

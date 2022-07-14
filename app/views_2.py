@@ -12,10 +12,36 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout,login as login_aut
 #importar libreria decoradora que evita el ingreso a las paginas 
 from django.contrib.auth.decorators import login_required
+from transbank.webpay.webpay_plus.transaction import *
+from transbank.webpay.webpay_plus.transaction import Transaction
+import random
+from flask import render_template, request
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
 
+
+### Transbank ###
+
+def webpay_plus_create():
+    print("Webpay Plus Transaction.create")
+    buy_order = str(random.randrange(1000000, 99999999))
+    session_id = str(random.randrange(1000000, 99999999))
+    amount = random.randrange(10000, 1000000)
+    return_url = request.url_root + 'webpay-plus/commit'
+
+    create_request = {
+        "buy_order": buy_order,
+        "session_id": session_id,
+        "amount": amount,
+        "return_url": return_url
+    }
+
+    response = (Transaction()).create(buy_order, session_id, amount, return_url)
+
+    print(response)
+
+    return render_template('webpay/plus/create.html', request=create_request, response=response)
 
 ### CRUD SERVICIOS ###
 def listado_tipo_servicios():
@@ -123,3 +149,7 @@ def registroC(request):
         data['clientes'] = listado_clientes() 
     return render(request, 'app/registroC.html', data)
 ### FIN DEL LOGIN ### 
+def carrito(request):
+
+    return render(request, 'app/carro.html')   
+### Carrito ###

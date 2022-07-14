@@ -30,4 +30,5 @@ urlpatterns = [
     path('adm-resenas-2/<id>/', adm_resenas_2, name="adm_resenas_2"),
     path('eliminarresena/<id>/', eliminar_resena, name="eliminar_resena"),
     path('modificarresena/<id>/', adm_modificar_resena, name="modificar_resena"),
+    path('carro/', carrito, name="carrito"),
 ]

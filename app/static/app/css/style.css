@@ -3,3 +3,10 @@
     min-height: 100vh;
 
 }
+
+.back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+}
