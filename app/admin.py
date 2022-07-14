@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empleado, Producto, Cliente, Servicio, Banco, TipoProducto, TipoServicio, TipoEmpleado
+from .models import Empleado, OrdenCompra, Producto, Cliente, Servicio, Banco, TipoProducto, TipoServicio, TipoCuenta
 
 # Register your models here.
 class ProductoAdmin(admin.ModelAdmin):
@@ -19,11 +19,13 @@ class ClienteAdmin(admin.ModelAdmin):
     
     
     
-admin.site.register(Empleado, EmpleadoAdmin)
 admin.site.register(Producto, ProductoAdmin)
-admin.site.register(Cliente, ClienteAdmin)
-admin.site.register(Servicio)
-admin.site.register(Banco)
 admin.site.register(TipoProducto)
+admin.site.register(Servicio)
 admin.site.register(TipoServicio)
-admin.site.register(TipoEmpleado)
+admin.site.register(Empleado, EmpleadoAdmin)
+admin.site.register(Cliente, ClienteAdmin)
+admin.site.register(Banco)
+admin.site.register(TipoCuenta)
+admin.site.register(OrdenCompra)
+

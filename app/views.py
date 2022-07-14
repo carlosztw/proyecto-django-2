@@ -1,4 +1,3 @@
-import email
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.core.paginator import Page, Paginator
@@ -6,14 +5,18 @@ from django.http import Http404
 from django.core.files.storage import FileSystemStorage
 import cx_Oracle
 #importar el modelo de la tabla user
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 #importar libreria para autentificar usuarios 
 from django.contrib.auth import authenticate,logout,login as login_aut
 #importar libreria decoradora que evita el ingreso a las paginas 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
+
+group_vendedor = Group.objects.get(name='vendedor')
+group_adm = Group.objects.get(name='administrador')
+group_tecnico = Group.objects.get(name='tecnico')
 
 def base(request):
     return render(request, 'app/base.html')
@@ -29,6 +32,7 @@ def navbar():
     return aux
 
 ### CRUD PRODUCTOS ###
+
 def productos(request):
     listadoProductos = listado_productos()
     page = request.GET.get('page', 1)
@@ -61,16 +65,22 @@ def listar_producto(id):
         lista.append(i)
     return lista
 
+
+
 def agregar_producto(p_nombre, p_precio, p_stock, p_tp, p_imagen):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc('INSERTAR_PRODUCTO', [p_nombre, p_precio, p_stock, p_tp, p_imagen, salida])
     return salida.getvalue()
-    
+
+
+
 def modificar_producto(id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc('ACTUALIZAR_PRODUCTO', [id, pm_nombre, pm_precio, pm_stock, pm_tp, pm_imagen, salida])
     return salida.getvalue()
 
+
+@permission_required('app.change_producto')
 def adm_modificar_producto(request, id):    
     data = {
         'producto':listar_producto(id),
@@ -102,6 +112,8 @@ def adm_modificar_producto(request, id):
         data['mensaje'] = 'El producto no fue modificado' 
     return render(request, 'administradores/adm_productos_modificar.html', data)
 
+
+@permission_required('app.delete_producto')
 def eliminar_producto(request, id):
     data = {}
     salida = cursor.var(cx_Oracle.NUMBER)
@@ -113,19 +125,17 @@ def eliminar_producto(request, id):
         data['mensaje'] = 'El producto no fue eliminado' 
     return redirect(to="adm_productos")
 
+
+@login_required(login_url='/login/')
+@permission_required('app.add_producto')
+@permission_required('app.delete_producto')
+@permission_required('app.change_producto')
 def adm_productos(request):
     listadoProductos = listado_productos()
-    page = request.GET.get('page', 1)
 
-    try:
-        paginator = Paginator(listadoProductos, 9)
-        listadoProductos = paginator.page(page)
-    except:
-        raise Http404
 
     data = {
         'productos':listadoProductos,
-        'paginator': paginator,
         'a_p': navbar(),
         'categorias': listado_tipo_productos(),
     }
@@ -189,6 +199,10 @@ def modificar_trabajador(id, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t
     cursor.callproc('MODIFICAR_TRABAJADOR', [id, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc, salida])
     return salida.getvalue()
 
+@login_required(login_url='/login/')
+@permission_required('app.add_empleado')
+@permission_required('app.delete_empleado')
+@permission_required('app.change_empleado')
 def adm_trabajadores(request):
     data = {
         'a_t': 'active',
@@ -215,12 +229,24 @@ def adm_trabajadores(request):
         t_tc = request.POST.get('t_tc')
         salida = agregar_trabajador(t_rut, t_dv, t_pn, t_sn, t_pa, t_sa, t_c, t_p, t_d, t_te, t_s, t_nc, t_temp, t_b, t_tc); 
         if salida == 1:
+            user = User.objects.create_user(t_c, t_c, t_p)
+            user.first_name = t_pn
+            user.last_name = t_pa
+            user.save() 
+            id_temp = int(t_temp)
+            if id_temp == 10:
+                user.groups.add(group_vendedor)
+            elif id_temp == 30:
+                user.groups.add(group_adm)
+            elif id_temp == 40:
+                user.groups.add(group_tecnico)
             data['mensaje'] = 'Trabajador agregado'
         else:   
             data['mensaje'] = 'El trabajador no fue agregado'
         data['trabajadores'] = listado_trabajadores() 
     return render(request, 'administradores/adm_trabajadores.html', data)   
 
+@permission_required('app.change_empleado')
 def adm_modificar_trabajadores(request, id):
     data = {
         'a_t': 'active',
@@ -251,6 +277,7 @@ def adm_modificar_trabajadores(request, id):
         return redirect(to="adm_trabajadores")
     return render(request, 'administradores/adm_trabajadores_modificar.html', data)   
 
+@permission_required('app.delete_empleado')
 def eliminar_trabajador(request, id):
     cursor.callproc('ELIMINAR_TRABAJADOR', [id])
     return redirect(to="adm_trabajadores")
@@ -308,6 +335,10 @@ def modificar_cliente(id, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te):
     cursor.callproc('ACTUALIZAR_CLIENTE', [id, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te, salida])
     return salida.getvalue()
 
+@login_required(login_url='/login/')
+@permission_required('app.add_cliente')
+@permission_required('app.delete_cliente')
+@permission_required('app.change_cliente')
 def adm_clientes(request):
     data = {
         'clientes':listado_clientes(),
@@ -327,11 +358,24 @@ def adm_clientes(request):
         salida = agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te); 
         if salida == 1:
             data['mensaje'] = 'Cliente agregado'
+            user = User.objects.create_user(c_c, c_c, c_p)
+            user.first_name = c_pn
+            user.last_name = c_pa
+            user.save()
+            group = Group.objects.get(name='cliente')
+            user.groups.add(group)
+            new_user = authenticate(username=c_c,
+                                    password=c_p,
+                                    )
+            if new_user is not None and new_user.is_active:
+                login_aut(request,new_user)
+                return render(request, 'app/inicio.html')
         else:   
             data['mensaje'] = 'El cliente no fue agregado'
         data['clientes'] = listado_clientes() 
     return render(request, 'administradores/adm_clientes.html', data)   
 
+@permission_required('app.change_cliente')
 def adm_modificar_clientes(request, id):
     data = {
         'a_c': navbar(),
@@ -354,6 +398,7 @@ def adm_modificar_clientes(request, id):
         return redirect(to="adm_clientes")
     return render(request, 'administradores/adm_clientes_modificar.html', data)   
 
+@permission_required('app.delete_cliente')
 def eliminar_cliente(request, id):
     cursor.callproc('ELIMINAR_CLIENTE', [id])
     return redirect(to="adm_clientes")
@@ -394,6 +439,9 @@ def resenas(request, id):
         data['resena'] = listar_resenas(id)     
     return render(request, 'app/resenas.html', data)
 
+@login_required(login_url='/login/')
+@permission_required('app.delete_resena')
+@permission_required('app.change_resena')
 def adm_resenas_1(request):
     listadoProductos = listado_productos()
     page = request.GET.get('page', 1)
@@ -412,6 +460,8 @@ def adm_resenas_1(request):
 
     return render(request, 'administradores/adm_resenas_1.html', data) 
 
+@permission_required('app.delete_resena')
+@permission_required('app.change_resena')
 def adm_resenas_2(request, id):
     data = {
         'producto': listar_producto(id),
@@ -430,6 +480,7 @@ def adm_resenas_2(request, id):
         data['resena'] = listar_resenas(id)     
     return render(request, 'administradores/adm_resenas_2.html', data)
 
+@permission_required('app.delete_resena')
 def eliminar_resena(request, id):
     data = {}
     salida = cursor.var(cx_Oracle.NUMBER)
@@ -441,6 +492,7 @@ def eliminar_resena(request, id):
         data['mensaje'] = 'La reseña no fue eliminada' 
     return redirect(request.META['HTTP_REFERER'])
 
+@permission_required('app.change_resena')
 def modificar_resena(id, rm_c, rm_v):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc('ACTUALIZAR_RESENA', [id, rm_c, rm_v, salida])
@@ -454,6 +506,7 @@ def listar_resena(id):
         lista.append(i)
     return lista
 
+@permission_required('app.change_resena')
 def adm_modificar_resena(request, id):
     data = {
         'a_r': navbar(),

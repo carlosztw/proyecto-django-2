@@ -1,34 +1,35 @@
 
-.titulo1{
-text-align: center;
-color: navy;
+@media (min-width: 1025px) {
+.h-custom {
+height: 100vh !important;
+}
 }
 
-#contenido{
-    display: flex;
-    flex-wrap: wrap;
-    margin: 2%;
-
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+font-size: 1rem;
+line-height: 2.15;
+padding-left: .75em;
+padding-right: .75em;
 }
 
-#tabla{
-    margin-inline-start: auto;
+.card-registration .select-arrow {
+top: 13px;
 }
 
-#tabla #datos{
-    margin: 5px;
-    background-color: aliceblue;
+.bg-grey {
+background-color: #eae8e8;
 }
 
-#vacio{
-    text-align: center;
-    font-weight: bold;
-    margin: 30%;
-    padding: 30%;
+@media (min-width: 992px) {
+.card-registration-2 .bg-grey {
+border-top-right-radius: 16px;
+border-bottom-right-radius: 16px;
+}
 }
 
-#btn-vacio{
-    font-size: 20px;
-    margin-bottom: 1%;
-    padding: 5%;
+@media (max-width: 991px) {
+.card-registration-2 .bg-grey {
+border-bottom-left-radius: 16px;
+border-bottom-right-radius: 16px;
+}
 }

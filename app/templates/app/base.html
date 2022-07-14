@@ -39,6 +39,7 @@
             <a class="nav-link {{servicios}}" href="{% url 'servicios' %}">Servicios</a>
           </li>
           {% if user.is_authenticated %}
+          {% if perms.app.change_producto or perms.app.delete_cliente or perms.app.change_resena or perms.app.delete_empleado or perms.app.delete_servicio %}
           <!--administrador-->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle {{a_p}}{{a_c}}{{a_t}}{{a_s}}{{a_r}}" href="#" id="navbarDropdown" role="button"
@@ -46,13 +47,24 @@
               Administrar
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if perms.app.change_producto and perms.app.add_producto and perms.app.delete_producto %}
               <li><a class="dropdown-item {{a_p}}" href="{% url 'adm_productos' %}">Productos</a></li>
+              {% endif %}
+              {% if perms.app.change_cliente and perms.app.add_cliente and perms.app.delete_cliente %}
               <li><a class="dropdown-item {{a_c}}" href="{% url 'adm_clientes' %}">Clientes</a></li>
+              {% endif %}
+              {% if perms.app.change_empleado and perms.app.add_empleado and perms.app.delete_empleado %}
               <li><a class="dropdown-item {{a_t}}" href="{% url 'adm_trabajadores' %}">Trabajadores</a></li>
+              {% endif %}
+              {% if perms.app.change_servicio and perms.app.add_servicio and perms.app.delete_servicio %}
               <li><a class="dropdown-item {{a_s}}" href="{% url 'adm_servicios' %}">Servicios</a></li>
+              {% endif %}
+              {% if perms.app.change_resena and perms.app.add_resena and perms.app.delete_resena %}
               <li><a class="dropdown-item {{a_r}}" href="{% url 'adm_resenas_1' %}">Reseñas</a></li>
+              {% endif %} 
             </ul>
           </li>
+          {% endif %}
           {% endif %}
           
         </ul>

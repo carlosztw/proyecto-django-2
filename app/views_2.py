@@ -1,47 +1,19 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.core.paginator import Page, Paginator
-from django.http import Http404
-from django.core.files.storage import FileSystemStorage
 from .views import *
 from carro import views
 import cx_Oracle
 #importar el modelo de la tabla user
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 #importar libreria para autentificar usuarios 
 from django.contrib.auth import authenticate,logout,login as login_aut
 #importar libreria decoradora que evita el ingreso a las paginas 
 from django.contrib.auth.decorators import login_required
-from transbank.webpay.webpay_plus.transaction import *
-from transbank.webpay.webpay_plus.transaction import Transaction
-import random
-from flask import render_template, request
+
 # Create your views here.
 django_cursor = connection.cursor()
 cursor = django_cursor.connection.cursor()
 
-
-### Transbank ###
-
-def webpay_plus_create():
-    print("Webpay Plus Transaction.create")
-    buy_order = str(random.randrange(1000000, 99999999))
-    session_id = str(random.randrange(1000000, 99999999))
-    amount = random.randrange(10000, 1000000)
-    return_url = request.url_root + 'webpay-plus/commit'
-
-    create_request = {
-        "buy_order": buy_order,
-        "session_id": session_id,
-        "amount": amount,
-        "return_url": return_url
-    }
-
-    response = (Transaction()).create(buy_order, session_id, amount, return_url)
-
-    print(response)
-
-    return render_template('webpay/plus/create.html', request=create_request, response=response)
 
 ### CRUD SERVICIOS ###
 def listado_tipo_servicios():
@@ -75,6 +47,9 @@ def servicios(request):
             data['mensaje'] = 'Error, el servicio no fue enviado' 
     return render(request, 'app/servicios.html', data)
 
+@login_required(login_url='/login/')
+@permission_required('app.delete_servicio')
+@permission_required('app.change_servicio')
 def adm_servicios(request):
     data={
         'a_s': navbar(),
@@ -90,6 +65,7 @@ def listado_servicios():
         lista.append(i)
     return lista
 
+@permission_required('app.delete_servicio')
 def eliminar_servicio(request, id):
     data = {}
     salida = cursor.var(cx_Oracle.NUMBER)
@@ -143,13 +119,24 @@ def registroC(request):
         c_te = request.POST.get('txtNumero')
         salida = agregar_cliente(c_rut, c_dv, c_pn, c_sn, c_pa, c_sa, c_c, c_p, c_d, c_te); 
         if salida == 1:
+            user = User.objects.create_user(c_c, c_c, c_p)
+            user.first_name = c_pn
+            user.last_name = c_pa
+            user.save()
+            group = Group.objects.get(name='cliente')
+            user.groups.add(group)
+            new_user = authenticate(username=c_c,
+                                    password=c_p,
+                                    )
+            if new_user is not None and new_user.is_active:
+                login_aut(request,new_user)
+                return render(request, 'app/inicio.html')
             data['mensaje'] = 'Cliente agregado'
         else:   
             data['mensajeError'] = 'El cliente no fue agregado'
-        data['clientes'] = listado_clientes() 
     return render(request, 'app/registroC.html', data)
 ### FIN DEL LOGIN ### 
+### Carrito ###
 def carrito(request):
 
     return render(request, 'app/carro.html')   
-### Carrito ###

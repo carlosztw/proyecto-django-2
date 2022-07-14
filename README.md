@@ -12,3 +12,9 @@
     
     Usuario: admin 
     Contraseña: admin123321
+
+- Usuarios de prueba:
+    
+    Usuarios: administrador, vendedor, tecnico, cliente
+    Contraseña: asdf123321
+

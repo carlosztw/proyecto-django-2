@@ -14,6 +14,7 @@ class Carro:
                 "nombre": Producto.nombre,
                 "precio": str(Producto.precio),
                 "cantidad": 1,
+                "tipo": str(Producto.id_tipo_producto),
                 "imagen": Producto.imagen.name
             }
         else:

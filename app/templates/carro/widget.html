@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %}
 <table class="table table-bordered" style="color: black; border: #0D6EFD;">
     <thead>
         <tr>
@@ -22,7 +22,7 @@
                     {% else %}
                     <td></td><a href="{% url 'resenas' value.id_producto %}"><img src="{% static 'app/img/noimagen.jpg' %}"></a></tr>
                     {% endif %}
-                    <td>{{value.nombre}} {{value.imagen}}</td>
+                    <td>{{value.nombre}} </td>
                     <td>{{value.cantidad}}</td>
                     <td>
                         <a href="{% url 'carro:agregar' value.id_producto %}" class="btn btn-sm" style="background-color: #0D6EFD; color: white;">+</a>
@@ -45,7 +45,7 @@
     <tfoot>
         <tr>
             <td colspan="4">
-                <b>Total: $ {{ importe_total_carro }}</b><a href="{% url 'carro:limpiar' %}" class="btn btn-sm btn-danger" style=" color: white; float: right;">Limpiar carro</a><br><br> 
+                <b>Total: $ {{ importe_total_carro }}  {{ items_carro}}</b><a href="{% url 'carro:limpiar' %}" class="btn btn-sm btn-danger" style=" color: white; float: right;">Limpiar carro</a><br><br> 
                 {% if request.session.carro.items %}
                     {% if user.is_authenticated %}
                     <div class="col text-center">
@@ -60,4 +60,4 @@
             </td>
         </tr>
     </tfoot>
-</table>
+</table> -->
