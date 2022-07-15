@@ -3,6 +3,7 @@
 - El proyecto utiliza la versión 4.0.4 de Django.
 
 - Instalar los paquetes del proyecto ejecutando el archivo requirements.txt (python -m pip install -r requirements.txt)
+    - pip install transbank-sdk
 
 - Para ejecutar el proyecto con la base de datos Oracle (Express Edition 18c) de manera local se deben ejecutar los scripts en SQL Developer en el siguiente orden:
  

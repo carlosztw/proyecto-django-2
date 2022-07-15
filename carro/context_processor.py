@@ -7,7 +7,7 @@ def importe_total_carro(request):
     if 'carro' in request.session:
         for key, value in request.session["carro"].items():
             total=total+(int(value["precio"]))
-    return {"importe_total_carro":total}
+    return {"importe_total_carro":total, 'total':total}
 
 def items_carro(request):
     total = 0
@@ -15,3 +15,10 @@ def items_carro(request):
         for key, value in request.session["carro"].items():
             total+=1
     return {"items_carro":total}
+
+def total_carro(request):
+    total=0
+    if 'carro' in request.session:
+        for key, value in request.session["carro"].items():
+            total=total+(int(value["precio"]))
+    return total

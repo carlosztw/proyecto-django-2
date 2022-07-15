@@ -71,7 +71,7 @@
       <div class="navbar-collapse collapse w-100 order-m-0 dual-collapse2" id="botonesnavbar">
         <ul class="navbar-nav ms-auto">
           <li>
-            <a href="{%  url 'carrito' %}" type="button" class="btn btn-success" style="margin-right: 15px; margin-bottom: 7px;" style="color: white;">
+            <a href="{%  url 'carrito' %}" type="button" class="btn btn-success" style="margin-right: 10px; margin-bottom: 7px;" style="color: white;">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
               <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
               </svg>
@@ -80,7 +80,7 @@
           </li>
           {% if user.is_authenticated %}
           <li>
-            <a class="nav-link">Bienvenido: {{user.first_name}} {{user.last_name}}</a>
+            <a class="nav-link" style="color:white; margin-right: 5px; font-weight: bold;">Bienvenido: {{user.first_name}} {{user.last_name}}</a>
           </li>
           <li class="nav-item">
             <a class="btn btn-danger"  href="{%  url 'CERRAR' %}">Cerrar sesion</a>

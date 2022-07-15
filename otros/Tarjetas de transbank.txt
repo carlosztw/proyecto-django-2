@@ -1,0 +1,15 @@
+APROBADA:
+Redcompra	4051 8842 3993 7763
+Redcompra	4511 3466 6003 7060
+Prepago VISA	4051 8860 0005 6590
+CVV 123
+cualquier fecha de expiración
+VISA	4051 8856 0044 6623
+CVV 123
+cualquier fecha de expiración
+
+RECHAZADA:
+Redcompra	5186 0085 4123 3829
+Prepago MASTERCARD	5186 1741 1062 9480
+CVV 123
+cualquier fecha de expiración

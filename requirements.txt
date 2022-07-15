@@ -1,3 +1,6 @@
 cx_oracle
 pillow
 Django==4.0.4
+transbank-sdk
+
+
